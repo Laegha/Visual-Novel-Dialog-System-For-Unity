@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf2ca9955241ab3409e5c95a13bf72a1, type: 3}
+  m_Name: EvilGonza
+  m_EditorClassIdentifier: 
+  characterPrefab: {fileID: 2211052437424760003, guid: cce44f6f5986f354e89f4361f76d80d0, type: 3}
+  bodyPoses:
+    _serializedList:
+    - Key: Idle
+      Value:
+        poseSprite: {fileID: -580319104, guid: b79c49ed8b22f64448c7ca561f1aa487, type: 3}
+        expressionPosition: {x: 0, y: 1.484}
+  facialExpresions:
+    _serializedList:
+    - Key: Happy
+      Value: {fileID: 1514434894, guid: b79c49ed8b22f64448c7ca561f1aa487, type: 3}
+    - Key: Sad
+      Value: {fileID: -1375195501, guid: b79c49ed8b22f64448c7ca561f1aa487, type: 3}
+    - Key: Angry
+      Value: {fileID: 1246093966, guid: b79c49ed8b22f64448c7ca561f1aa487, type: 3}
+    - Key: Concerned
+      Value: {fileID: -1779276909, guid: b79c49ed8b22f64448c7ca561f1aa487, type: 3}
+  textColor: {r: 0.5176471, g: 0, b: 1, a: 1}
+  characterName: EvilGonza

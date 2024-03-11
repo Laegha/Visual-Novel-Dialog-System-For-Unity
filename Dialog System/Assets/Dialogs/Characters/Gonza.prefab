@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8477208873708848480}
   - component: {fileID: 1523348816767601472}
+  - component: {fileID: 8660389670616197233}
+  - component: {fileID: 531142789051695404}
   m_Layer: 0
   m_Name: Gonza
   m_TagString: Untagged
@@ -47,6 +49,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   body: {fileID: 8852376384897731761}
   expression: {fileID: 6255487707512401121}
+--- !u!95 &8660389670616197233
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2211052437424760003}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!111 &531142789051695404
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2211052437424760003}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &5903266178517900680
 GameObject:
   m_ObjectHideFlags: 0

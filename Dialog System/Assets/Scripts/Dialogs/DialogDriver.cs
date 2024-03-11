@@ -26,6 +26,8 @@ public class DialogDriver : MonoBehaviour
 
     [HideInInspector] public bool lineFinished = false;
 
+    TextEffectsManager textEffectsManager;
+
     private void Awake()
     {
         dialog.thisDialogDriver = this;

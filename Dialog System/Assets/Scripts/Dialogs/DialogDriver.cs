@@ -82,6 +82,7 @@ public class DialogDriver : MonoBehaviour
             yield break;
 
         dialogText.text += currChar;
+        textEffectsManager.ApplyEffectsToCharacter(currCharIndex);
 
         if (currChar == ',')
             yield return new WaitForSeconds(timeAfterComma);

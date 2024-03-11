@@ -14,7 +14,6 @@ public class Dialog : ScriptableObject
     [SerializeField] SerializedDictionary<int, UnityEvent> dialogEvents;
 
     [HideInInspector] public DialogDriver thisDialogDriver;
-
     
     Enlarger enlargingCharacter = null;
     float speakerEnlargeTime = .2f;
@@ -23,6 +22,7 @@ public class Dialog : ScriptableObject
     Shrinker shrinkingCharacter = null;
     float speakerShrinkTime = .25f;
 
+    [SerializeField] TextEffectApplier[] textEffectAppliers;
     public void Start()
     {
         movementHandler = new CharacterMovementHandler(thisDialogDriver);
@@ -191,4 +191,15 @@ class Shrinker
     {
         objectToShrink.localScale = Vector2.one;
     }
+}
+
+[System.Serializable]
+class TextEffectApplier
+{
+    public int line;
+    public string word;
+    public int timesAppearedInLine;
+    public bool affectsAllWord;
+    public int[] affectedCharsIndexes;
+    public TextEffect effect;
 }

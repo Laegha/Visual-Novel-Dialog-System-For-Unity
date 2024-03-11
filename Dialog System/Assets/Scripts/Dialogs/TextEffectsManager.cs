@@ -14,9 +14,7 @@ public class TextEffectsManager : MonoBehaviour
 
     void Update()
     {
-        //text.ForceMeshUpdate();
-        //var textInfo = text.textInfo;
-        //var charInfo = textInfo.characterInfo[0];
+        text.ForceMeshUpdate();
     }
 
     public void SetNewLine(string newLine)
@@ -53,11 +51,6 @@ public class TextEffectsManager : MonoBehaviour
     public void SetNewEffect(string affectedWord, int timesAppearedInLine, TextEffect effect, int[] affectedChars = null)
     {
         Word effectAffectedWord = wordsInLine.Where(x => x.word == affectedWord).Where(x => x.timesAppearedInLine == timesAppearedInLine).ToArray()[0];
-        //if(affectdChars != null)
-        //añadir todo al affectedCharIndexes. si existe la key del efecto agregar ahi, sino crear una nueva
-        //else
-        //añadir los chars del array con effectAffectedWord.charIndexesInLine[0] + affectedChars[i]
-
 
         if (!modifiedCharIndexes.ContainsKey(effect))
             modifiedCharIndexes.Add(effect, new List<int>());
@@ -68,38 +61,10 @@ public class TextEffectsManager : MonoBehaviour
 
     public void ApplyEffectsToCharacter(int characterIndex)
     {
-        //foreach (KeyValuePair<TextEffect, List<int>> modifiedChars in modifiedCharIndexes)
-            //if (modifiedChars.Value.Contains(characterIndex))
-                //aplicar el efecto de modifiedChars.Key
+        foreach (KeyValuePair<TextEffect, List<int>> modifiedChars in modifiedCharIndexes)
+            if (modifiedChars.Value.Contains(characterIndex))
+                modifiedChars.Key.GetNewChar(text);
     }
-
-    //public void GetEffectsIndex()
-    //{
-    //    for (int i = 0; i < currLine.Length; i++) //each character in line
-    //    {
-    //        if (currLine[i] == ' ' || currLine[i] == '.' || currLine[i] == ',' || currLine[i] == '!' || currLine[i] == '¡' || currLine[i] == '?' || currLine[i] == '¿' || currLine[i] == ':' || currLine[i] == ';')
-    //            continue;
-
-    //        foreach(KeyValuePair<string, List<TextEffect>> list in effects) //each effect per character
-    //        {
-    //            List<int> indexes = new List<int>();
-    //            for (int j = 0; j < list.Key.Length; j++)
-    //            {
-    //                int affectedCharIndexInLine = i + j;
-    //                if (currLine[affectedCharIndexInLine] != list.Key[j])
-    //                {
-    //                    indexes.Clear();
-    //                    break;
-    //                }
-
-    //                indexes.Add(affectedCharIndexInLine);
-
-    //            }
-
-    //        }
-    //    }
-    //}
-
 }
 
 class Word
@@ -115,14 +80,3 @@ class Word
         this.timesAppearedInLine = timesAppearedInLine;
     }
 }
-#region Basic effect struct
-//var textInfo = text.textInfo;
-//for(int i = 0; i < textInfo.characterCount; i++) 
-//{
-//    var charInfo = textInfo.characterInfo[i];
-//    if(!charInfo.isVisible)
-//        continue;
-
-//    var verts = textInfo.meshInfo[charInfo.materialReferenceIndex].vertices;
-//}
-#endregion

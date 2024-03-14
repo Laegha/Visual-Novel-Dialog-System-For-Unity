@@ -35,6 +35,7 @@ public class DialogDriver : MonoBehaviour
 
     private void Start() 
     {
+        textEffectsManager = new TextEffectsManager(dialogText);
         dialog.Start();
         StartNewLine(dialog.dialogTable.StringTables[0][currLineIndex.ToString()].Value);
     }

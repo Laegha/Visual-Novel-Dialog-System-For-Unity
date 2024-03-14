@@ -5,12 +5,17 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class TextEffectsManager : MonoBehaviour
+public class TextEffectsManager
 {
-    [SerializeField] TextMeshProUGUI text;
+    TextMeshProUGUI text;
     string currLine;
     List<Word> wordsInLine = new List<Word>();
     Dictionary<TextEffect, List<int>> modifiedCharIndexes = new Dictionary<TextEffect, List<int>>();
+
+    public TextEffectsManager(TextMeshProUGUI text)
+    {
+        this.text = text;
+    }
 
     void Update()
     {

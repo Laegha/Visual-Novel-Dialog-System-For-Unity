@@ -64,6 +64,7 @@ public class DialogDriver : MonoBehaviour
         dialogText.text = "";
         currCharIndex = 0;
 
+        textEffectsManager.SetNewLine(newLine);
         dialog.CheckEvents(currLineIndex);
 
         lineFinished = false;

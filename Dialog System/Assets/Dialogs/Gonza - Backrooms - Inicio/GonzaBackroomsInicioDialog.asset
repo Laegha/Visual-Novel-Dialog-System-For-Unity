@@ -156,3 +156,10 @@ MonoBehaviour:
               m_BoolArgument: 0
             m_CallState: 2
   thisDialogDriver: {fileID: 0}
+  textEffectAppliers:
+  - line: 0
+    word: 
+    timesAppearedInLine: 0
+    affectsAllWord: 0
+    affectedCharsIndexes: 
+    effect: {fileID: 0}

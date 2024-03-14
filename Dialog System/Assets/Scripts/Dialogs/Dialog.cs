@@ -23,10 +23,7 @@ public class Dialog : ScriptableObject
     float speakerShrinkTime = .25f;
 
     [SerializeField] TextEffectApplier[] textEffectAppliers;
-    public void Start()
-    {
-        movementHandler = new CharacterMovementHandler(thisDialogDriver);
-    }
+    public void Start() => movementHandler = new CharacterMovementHandler(thisDialogDriver);
 
     public void Update()
     {
@@ -157,10 +154,7 @@ class Enlarger
         return false;
     }
 
-    public void EndEnlarge()
-    {
-        objectToEnlarge.localScale = originalSize * objectiveIncrementPercent;
-    }
+    public void EndEnlarge() => objectToEnlarge.localScale = originalSize * objectiveIncrementPercent;
 }
 
 class Shrinker
@@ -187,10 +181,7 @@ class Shrinker
         return false;
     }
 
-    public void EndShrink()
-    {
-        objectToShrink.localScale = Vector2.one;
-    }
+    public void EndShrink() => objectToShrink.localScale = Vector2.one;
 }
 
 [System.Serializable]

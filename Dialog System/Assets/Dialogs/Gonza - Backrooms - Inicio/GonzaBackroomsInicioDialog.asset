@@ -158,8 +158,8 @@ MonoBehaviour:
   thisDialogDriver: {fileID: 0}
   textEffectAppliers:
   - line: 0
-    word: 
+    word: gonza
     timesAppearedInLine: 0
-    affectsAllWord: 0
+    affectsAllWord: 1
     affectedCharsIndexes: 
-    effect: {fileID: 0}
+    effect: {fileID: 11400000, guid: 5b2f8213838e90341875339bdc515c3b, type: 2}

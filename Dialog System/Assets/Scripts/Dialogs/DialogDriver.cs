@@ -43,6 +43,7 @@ public class DialogDriver : MonoBehaviour
     {
         if (dialog != null)
             dialog.Update();
+        textEffectsManager.Update();
     }
 
     public void NextLinearLine(InputAction.CallbackContext context)

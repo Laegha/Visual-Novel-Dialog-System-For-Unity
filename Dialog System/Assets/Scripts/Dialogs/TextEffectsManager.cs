@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEngine;
 
 public class TextEffectsManager
 {
@@ -17,7 +14,7 @@ public class TextEffectsManager
         this.text = text;
     }
 
-    void Update()
+    public void Update()
     {
         text.ForceMeshUpdate();
     }

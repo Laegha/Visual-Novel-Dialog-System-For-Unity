@@ -66,6 +66,8 @@ public class TextEffectsManager
 
     public void ApplyEffectsToCharacter(int characterIndex)
     {
+        if (modifiedCharIndexes.Count <= 0)
+            return;
         foreach (KeyValuePair<TextEffect, List<int>> modifiedChars in modifiedCharIndexes)
             if (modifiedChars.Value.Contains(characterIndex))
                 modifiedChars.Key.GetNewChar(text);

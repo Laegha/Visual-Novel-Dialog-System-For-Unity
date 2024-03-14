@@ -4,6 +4,7 @@ using AYellowpaper.SerializedCollections;
 using UnityEditor.Localization;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Linq;
 
 [CreateAssetMenu(fileName = "NewDialog", menuName = "ScriptableObjects/Dialogs/Dialog", order = 1)]
 public class Dialog : ScriptableObject
@@ -64,6 +65,15 @@ public class Dialog : ScriptableObject
     {
         if (dialogEvents.ContainsKey(currLine))
             dialogEvents[currLine].Invoke();
+    }
+
+    public void CheckTextEffects(int currLine)
+    {
+        TextEffectApplier textEffectApplier = textEffectAppliers.Where(x => x.line == currLine).ToArray()[0];
+        if(textEffectApplier != null)
+        {
+            thisDialogDriver.textEffectsManager.SetNewEffect(textEffectApplier.word, textEffectApplier.timesAppearedInLine, textEffectApplier.effect, textEffectApplier.affectedCharsIndexes);
+        }
     }
 
     public void ChangeSpeaker(DialogCharacter newSpeaker)

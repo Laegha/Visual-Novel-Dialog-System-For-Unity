@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using TMPro;
 
@@ -57,8 +58,8 @@ public class TextEffectsManager
         if (!modifiedCharIndexes.ContainsKey(effect))
             modifiedCharIndexes.Add(effect, new List<int>());
 
-        foreach (int i in affectedChars != null ? effectAffectedWord.charIndexesInLine : affectedChars) //if the whole word is affected, check all the character indexes, else check only the specified
-            modifiedCharIndexes[effect].Add(affectedChars != null ? i : effectAffectedWord.charIndexesInLine[i]); //if the whole word is affected, add the indexes in the array, else add the specified indexes
+        foreach (int i in affectedChars == null ? effectAffectedWord.charIndexesInLine : affectedChars) //if the whole word is affected, check all the character indexes, else check only the specified
+            modifiedCharIndexes[effect].Add(affectedChars == null ? i : effectAffectedWord.charIndexesInLine[i]); //if the whole word is affected, add the indexes in the array, else add the specified indexes
     }
 
     public void ApplyEffectsToCharacter(int characterIndex)

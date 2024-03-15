@@ -72,7 +72,7 @@ public class Dialog : ScriptableObject
         TextEffectApplier textEffectApplier = textEffectAppliers.Where(x => x.line == currLine).ToArray()[0];
         if(textEffectApplier != null)
         {
-            thisDialogDriver.textEffectsManager.SetNewEffect(textEffectApplier.word, textEffectApplier.timesAppearedInLine, textEffectApplier.effect, textEffectApplier.affectedCharsIndexes);
+            thisDialogDriver.textEffectsManager.SetNewEffect(textEffectApplier.word, textEffectApplier.timesAppearedInLine, textEffectApplier.effect, textEffectApplier.affectsAllWord ? null : textEffectApplier.affectedCharsIndexes);
         }
     }
 

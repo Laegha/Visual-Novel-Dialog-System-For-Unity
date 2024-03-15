@@ -158,7 +158,7 @@ MonoBehaviour:
   thisDialogDriver: {fileID: 0}
   textEffectAppliers:
   - line: 0
-    word: gonza
+    word: name
     timesAppearedInLine: 0
     affectsAllWord: 1
     affectedCharsIndexes: 

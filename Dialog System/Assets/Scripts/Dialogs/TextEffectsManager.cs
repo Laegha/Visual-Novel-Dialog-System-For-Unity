@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using TMPro;
 
 public class TextEffectsManager
 {
     TextMeshProUGUI text;
+    TMP_TextInfo textInfo;
     string currLine;
     List<Word> wordsInLine = new List<Word>();
     Dictionary<TextEffect, List<int>> modifiedCharIndexes = new Dictionary<TextEffect, List<int>>();
@@ -13,11 +15,27 @@ public class TextEffectsManager
     public TextEffectsManager(TextMeshProUGUI text)
     {
         this.text = text;
+        textInfo = text.textInfo;
     }
 
     public void Update()
     {
         text.ForceMeshUpdate();
+        foreach (KeyValuePair<TextEffect, List<int>> modifiedChars in modifiedCharIndexes)
+        {
+            foreach(int charIndex in modifiedChars.Value)
+            {
+                if (charIndex >= textInfo.characterCount)
+                    break;
+                modifiedChars.Key.ApplyEffect(text, charIndex);
+            }
+        }
+        for (int i = 0; i < textInfo.meshInfo.Length; i++)
+        {
+            var meshInfo = textInfo.meshInfo[i];
+            meshInfo.mesh.colors32 = meshInfo.colors32;
+            text.UpdateGeometry(meshInfo.mesh, i);
+        }
     }
 
     public void SetNewLine(string newLine)
@@ -62,14 +80,14 @@ public class TextEffectsManager
             modifiedCharIndexes[effect].Add(affectedChars == null ? i : effectAffectedWord.charIndexesInLine[i]); //if the whole word is affected, add the indexes in the array, else add the specified indexes
     }
 
-    public void ApplyEffectsToCharacter(int characterIndex)
-    {
-        if (modifiedCharIndexes.Count <= 0)
-            return;
-        foreach (KeyValuePair<TextEffect, List<int>> modifiedChars in modifiedCharIndexes)
-            if (modifiedChars.Value.Contains(characterIndex))
-                modifiedChars.Key.GetNewChar(text);
-    }
+    //public void ApplyEffectsToCharacter(int characterIndex)
+    //{
+    //    if (modifiedCharIndexes.Count <= 0)
+    //        return;
+    //    foreach (KeyValuePair<TextEffect, List<int>> modifiedChars in modifiedCharIndexes)
+    //        if (modifiedChars.Value.Contains(characterIndex))
+    //            modifiedChars.Key.GetNewChar(text);
+    //}
 }
 
 class Word

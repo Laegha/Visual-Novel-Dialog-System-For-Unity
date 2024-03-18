@@ -42,7 +42,6 @@ public class DialogDriver : MonoBehaviour
     {
         if (dialog != null)
             dialog.Update();
-        textEffectsManager.Update();
     }
 
     public void NextLinearLine(InputAction.CallbackContext context)
@@ -85,7 +84,7 @@ public class DialogDriver : MonoBehaviour
             yield break;
 
         dialogText.text += currChar;
-        //textEffectsManager.ApplyEffectsToCharacter(currCharIndex);
+        textEffectsManager.Update();
 
         if (currChar == ',')
             yield return new WaitForSeconds(timeAfterComma);

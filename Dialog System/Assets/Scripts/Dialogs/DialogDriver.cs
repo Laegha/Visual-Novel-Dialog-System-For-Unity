@@ -42,6 +42,8 @@ public class DialogDriver : MonoBehaviour
     {
         if (dialog != null)
             dialog.Update();
+        if(lineFinished)
+            textEffectsManager.Update();
     }
 
     public void NextLinearLine(InputAction.CallbackContext context)

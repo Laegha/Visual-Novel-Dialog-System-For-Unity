@@ -69,11 +69,12 @@ public class Dialog : ScriptableObject
 
     public void CheckTextEffects(int currLine)
     {
+        if (textEffectAppliers.Where(x => x.line == currLine).Count() <= 0)
+            return;
+
         TextEffectApplier textEffectApplier = textEffectAppliers.Where(x => x.line == currLine).ToArray()[0];
-        if(textEffectApplier != null)
-        {
-            thisDialogDriver.textEffectsManager.SetNewEffect(textEffectApplier.word, textEffectApplier.timesAppearedInLine, textEffectApplier.effect, textEffectApplier.affectsAllWord ? null : textEffectApplier.affectedCharsIndexes);
-        }
+        thisDialogDriver.textEffectsManager.SetNewEffect(textEffectApplier.word, textEffectApplier.timesAppearedInLine, textEffectApplier.effect, textEffectApplier.affectsAllWord ? null : textEffectApplier.affectedCharsIndexes);
+
     }
 
     public void ChangeSpeaker(DialogCharacter newSpeaker)

@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Dialogs/DialogTrees/DialogTreeEditor.uss?fileID=7433441132597879392&amp;guid=d8ba725f708c061438e964f31c0eccc5&amp;type=3#DialogTreeEditor" />
+    <SplitView fixed-pane-initial-dimension="225">
+        <ui:VisualElement name="Left-Panel" style="flex-grow: 1; flex-basis: 225px; flex-shrink: 1; background-color: rgb(56, 56, 56);">
+            <ui:Label tabindex="-1" text="Inspector" parse-escape-sequences="true" display-tooltip-when-elided="true" style="color: rgb(182, 182, 182); background-color: rgb(37, 37, 37); flex-basis: auto; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+            <InspectorView style="flex-grow: 1; flex-basis: 0;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="RightPanel" style="flex-grow: 1; opacity: 1; background-color: rgb(48, 48, 48);">
+            <ui:Label tabindex="-1" text="Tree view" parse-escape-sequences="true" display-tooltip-when-elided="true" style="color: rgb(182, 182, 182); background-color: rgb(37, 37, 37); -unity-background-scale-mode: stretch-to-fill; -unity-slice-top: 0; text-overflow: clip; white-space: normal; -unity-text-align: upper-left; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
+            <DialogTreeView focusable="true" style="flex-grow: 1;" />
+        </ui:VisualElement>
+    </SplitView>
+</ui:UXML>

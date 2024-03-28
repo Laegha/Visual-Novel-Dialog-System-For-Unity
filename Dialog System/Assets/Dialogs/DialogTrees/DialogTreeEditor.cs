@@ -23,4 +23,9 @@ public class DialogTreeEditor : EditorWindow
         VisualElement labelFromUXML = m_VisualTreeAsset.Instantiate();
         root.Add(labelFromUXML);
     }
+
+    private void OnSelectionChange()
+    {
+        Debug.Log("Cambio de seleccion a " + Selection.activeGameObject);
+    }
 }

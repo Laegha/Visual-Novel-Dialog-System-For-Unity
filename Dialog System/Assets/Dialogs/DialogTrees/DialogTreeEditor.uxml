@@ -7,6 +7,7 @@
         <ui:VisualElement name="RightPanel" style="flex-grow: 1; flex-shrink: 1; flex-direction: column;">
             <DialogTreeView focusable="true" style="flex-grow: 1; left: auto; align-items: stretch;">
                 <uie:Toolbar style="left: auto; border-left-color: rgb(35, 35, 35); border-right-color: rgb(35, 35, 35); border-top-color: rgb(35, 35, 35); border-bottom-color: rgb(35, 35, 35); background-color: rgb(60, 60, 60); height: 34px;" />
+                <DialogNode style="top: 144px; left: 104px; width: 150px; height: 44px;" />
             </DialogTreeView>
         </ui:VisualElement>
     </SplitView>

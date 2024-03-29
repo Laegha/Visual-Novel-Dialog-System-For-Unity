@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogNode : ScriptableObject
+public class DialogNode
 {
     // Start is called before the first frame update
     void Start()

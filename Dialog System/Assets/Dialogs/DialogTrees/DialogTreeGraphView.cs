@@ -35,6 +35,6 @@ public class DialogTreeGraphView : GraphView
         DialogNodeView newNode = new DialogNodeView();
         newNode.node = node;
         newNode.title = "New DialogNode";
-        Add(newNode);
+        AddElement(newNode);
     }
 }

@@ -8,6 +8,9 @@ public class DialogTreeEditor : EditorWindow
     private VisualTreeAsset m_VisualTreeAsset = default;
     DialogTreeGraphView treeView;
     InspectorView inspectorView;
+    TreeChangeView treeChangeView;
+
+    DialogTree currTree;
 
     [MenuItem("Window/DialogTreeEditor")]
     public static void ShowExample()
@@ -27,13 +30,24 @@ public class DialogTreeEditor : EditorWindow
 
         treeView = root.Q<DialogTreeGraphView>();
         inspectorView = root.Q<InspectorView>();
+        treeChangeView = root.Q<TreeChangeView>();
+        treeChangeView.dialogTreeEditor = this;
     }
 
-    private void OnTreeChange()
+    public void OnTreeChange(DialogTree newTree)
     {
+        currTree = newTree;
+        if (currTree == null)
+            return;
+
         Debug.Log("Cambio de seleccion a " + Selection.activeObject);
+        
     }
 
+    public bool IsTreeRefreshed()
+    {
+        return currTree == treeChangeView.TreeChange.currEditingTree;
+    }
     //void OnNodeSelectionChanged(DialogNodeView nodeView)
     //{
     //    inspectorView.UpdateSelection

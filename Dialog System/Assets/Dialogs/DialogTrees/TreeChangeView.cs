@@ -12,6 +12,9 @@ public class TreeChangeView : VisualElement
     TreeChange treeChange = ScriptableObject.CreateInstance("TreeChange") as TreeChange;
 
     Action refreshNodes;
+    public DialogTreeEditor dialogTreeEditor;
+
+    public TreeChange TreeChange { get { return treeChange; } }
 
     public TreeChangeView()
     {
@@ -28,6 +31,6 @@ public class TreeChangeView : VisualElement
 
     void RefreshNodes()
     {
-
+        dialogTreeEditor.OnTreeChange(treeChange.currEditingTree);
     }
 }

@@ -6,6 +6,8 @@ public class DialogTreeEditor : EditorWindow
 {
     [SerializeField]
     private VisualTreeAsset m_VisualTreeAsset = default;
+    DialogTreeGraphView treeView;
+    InspectorView inspectorView;
 
     [MenuItem("Window/DialogTreeEditor")]
     public static void ShowExample()
@@ -22,10 +24,18 @@ public class DialogTreeEditor : EditorWindow
         // Instantiate UXML
         VisualElement labelFromUXML = m_VisualTreeAsset.Instantiate();
         root.Add(labelFromUXML);
+
+        treeView = root.Q<DialogTreeGraphView>();
+        inspectorView = root.Q<InspectorView>();
     }
 
-    private void OnSelectionChange()
+    private void OnTreeChange()
     {
-        Debug.Log("Cambio de seleccion a " + Selection.activeGameObject);
+        Debug.Log("Cambio de seleccion a " + Selection.activeObject);
     }
+
+    //void OnNodeSelectionChanged(DialogNodeView nodeView)
+    //{
+    //    inspectorView.UpdateSelection
+    //}
 }

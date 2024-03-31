@@ -23,12 +23,21 @@ public class DialogTreeGraphView : GraphView
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
         //base.BuildContextualMenu(evt);
-        evt.menu.AppendAction($"[{System.Type.GetType("DialogNode")}]", (a) => CreateNode());
+        evt.menu.AppendAction($"[{System.Type.GetType("DialogNode")}]", (a) => CreateNode(null));
     }
 
-    void CreateNode()
+    public void PopulateView(DialogTree dialogTree)
     {
-        DialogNode node = new DialogNode();
+        Dialog[] currTreeDialogs = dialogTree.Dialogs;
+        foreach (Dialog dialog in currTreeDialogs)
+            CreateNode(dialog);
+    }
+
+    void CreateNode(Dialog nodeDialog)
+    {
+        //DialogNode node = new DialogNode(nodeDialog);
+        DialogNode node = ScriptableObject.CreateInstance("DialogNode") as DialogNode;
+        node.DialogSO = nodeDialog;
         CreateNodeView(node);
     }
 
@@ -39,5 +48,4 @@ public class DialogTreeGraphView : GraphView
         newNode.title = "New DialogNode";
         AddElement(newNode);
     }
-
 }

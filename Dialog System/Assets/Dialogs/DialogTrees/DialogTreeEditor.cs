@@ -29,6 +29,7 @@ public class DialogTreeEditor : EditorWindow
         root.Add(labelFromUXML);
 
         treeView = root.Q<DialogTreeGraphView>();
+        treeView.OnNodeSelected = OnNodeSelected;
         inspectorView = root.Q<InspectorView>();
         treeChangeView = root.Q<TreeChangeView>();
         treeChangeView.dialogTreeEditor = this;
@@ -47,6 +48,11 @@ public class DialogTreeEditor : EditorWindow
     public bool IsTreeRefreshed()
     {
         return currTree == treeChangeView.TreeChange.currEditingTree;
+    }
+
+    void OnNodeSelected(DialogNodeView node)
+    {
+        inspectorView.UpdateSelection(node);
     }
     //void OnNodeSelectionChanged(DialogNodeView nodeView)
     //{

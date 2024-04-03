@@ -3,10 +3,14 @@ using UnityEditor.Experimental.GraphView;
 using UnityEditor;
 using UnityEngine.InputSystem;
 using UnityEngine;
+using System;
 
 public class DialogTreeGraphView : GraphView
 {
     public new class UxmlFactory : UxmlFactory<DialogTreeGraphView, GraphView.UxmlTraits> { }
+
+    public Action<DialogNodeView> OnNodeSelected;
+
     public DialogTreeGraphView() 
     {
         Insert(0, new GridBackground());
@@ -37,7 +41,7 @@ public class DialogTreeGraphView : GraphView
     {
         //DialogNode node = new DialogNode(nodeDialog);
         DialogNode node = ScriptableObject.CreateInstance("DialogNode") as DialogNode;
-        node.DialogSO = nodeDialog;
+        node.Dialog = nodeDialog;
         CreateNodeView(node);
     }
 
@@ -45,6 +49,7 @@ public class DialogTreeGraphView : GraphView
     {
         DialogNodeView newNode = new DialogNodeView();
         newNode.node = node;
+        newNode.OnNodeSelected = OnNodeSelected;
         newNode.title = "New DialogNode";
         AddElement(newNode);
     }

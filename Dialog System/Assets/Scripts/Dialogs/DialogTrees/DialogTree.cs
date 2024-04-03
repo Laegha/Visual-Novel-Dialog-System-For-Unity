@@ -7,4 +7,5 @@ public class DialogTree : ScriptableObject
 {
     Dialog[] dialogs;
 
+    public Dialog[] Dialogs { set{ dialogs = value; } get { return dialogs; } }
 }

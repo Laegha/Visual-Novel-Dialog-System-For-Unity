@@ -5,5 +5,5 @@ using UnityEngine.UIElements;
 
 public class TreeChange : ScriptableObject
 {
-    public DialogTree currEditingTree;
+    public DialogTree currentlyEditingTree;
 }

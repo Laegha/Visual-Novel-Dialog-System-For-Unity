@@ -31,6 +31,6 @@ public class TreeChangeView : VisualElement
 
     void RefreshNodes()
     {
-        dialogTreeEditor.OnTreeChange(treeChange.currEditingTree);
+        dialogTreeEditor.OnTreeChange(treeChange.currentlyEditingTree);
     }
 }

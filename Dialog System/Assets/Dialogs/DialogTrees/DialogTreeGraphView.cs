@@ -11,6 +11,8 @@ public class DialogTreeGraphView : GraphView
 
     public Action<DialogNodeView> OnNodeSelected;
 
+    public DialogTreeEditor editor;
+
     public DialogTreeGraphView() 
     {
         Insert(0, new GridBackground());
@@ -26,7 +28,7 @@ public class DialogTreeGraphView : GraphView
     }
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
-        //base.BuildContextualMenu(evt);
+        base.BuildContextualMenu(evt);
         evt.menu.AppendAction($"[{System.Type.GetType("DialogNode")}]", (a) => CreateNode(null));
     }
 
@@ -39,6 +41,8 @@ public class DialogTreeGraphView : GraphView
 
     void CreateNode(Dialog nodeDialog)
     {
+        if (!editor.IsTreeRefreshed())
+            return;
         //DialogNode node = new DialogNode(nodeDialog);
         DialogNode node = ScriptableObject.CreateInstance("DialogNode") as DialogNode;
         node.Dialog = nodeDialog;

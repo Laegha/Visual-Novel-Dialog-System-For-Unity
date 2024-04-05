@@ -44,7 +44,7 @@ public class DialogTreeEditor : EditorWindow
             treeView.PopulateView(currTree);
 
         EditorGUI.BeginChangeCheck();
-        //dialogs = recorrer una lista con los DialogNodeView
+        //dialogs = recorrer una lista con los DialogNodeView. NodeView.Node.Dialog
     }
 
     public bool IsTreeRefreshed()

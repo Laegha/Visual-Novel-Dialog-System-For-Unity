@@ -11,6 +11,7 @@ public class DialogTreeEditor : EditorWindow
     TreeChangeView treeChangeView;
 
     DialogTree currTree;
+    Dialog[] dialogs;
 
     [MenuItem("Window/DialogTreeEditor")]
     public static void ShowExample()
@@ -41,6 +42,9 @@ public class DialogTreeEditor : EditorWindow
         currTree = treeChangeView.TreeChange.currentlyEditingTree;
         if (EditorGUI.EndChangeCheck())
             treeView.PopulateView(currTree);
+
+        EditorGUI.BeginChangeCheck();
+        //dialogs = recorrer una lista con los DialogNodeView
     }
 
     public bool IsTreeRefreshed()

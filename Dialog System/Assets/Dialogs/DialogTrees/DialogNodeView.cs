@@ -12,6 +12,8 @@ public class DialogNodeView : Node
     public Action<DialogNodeView> OnNodeSelected;
     public DialogNodeView()
     {
+        DialogNode createdNode = node != null ? node : ScriptableObject.CreateInstance("DialogNode") as DialogNode;
+        createdNode.RegisterDialogCallback(this);
         Editor editor = Editor.CreateEditor(node != null ? node : ScriptableObject.CreateInstance("DialogNode") as DialogNode);
         IMGUIContainer container = new IMGUIContainer(() => { editor.OnInspectorGUI(); });
         Add(container);
@@ -19,6 +21,7 @@ public class DialogNodeView : Node
         if (node == null)
             return;
         title = node.Dialog.name;
+        
     }
 
 
@@ -27,5 +30,10 @@ public class DialogNodeView : Node
         base.OnSelected();
         if (OnNodeSelected != null)
             OnNodeSelected.Invoke(this);
+    }
+
+    public void OnDialogChange(ChangeEvent<DialogNode> evt)
+    {
+        Debug.Log(evt);
     }
 }

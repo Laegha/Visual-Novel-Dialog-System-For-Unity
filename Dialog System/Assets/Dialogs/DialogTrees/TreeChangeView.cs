@@ -11,9 +11,6 @@ public class TreeChangeView : VisualElement
 
     TreeChange treeChange = ScriptableObject.CreateInstance("TreeChange") as TreeChange;
 
-    Action refreshNodes;
-    public DialogTreeEditor dialogTreeEditor;
-
     public TreeChange TreeChange { get { return treeChange; } }
 
     public TreeChangeView()
@@ -22,15 +19,5 @@ public class TreeChangeView : VisualElement
         IMGUIContainer container = new IMGUIContainer(() => { editor.OnInspectorGUI();});
         Add(container);
 
-        refreshNodes += RefreshNodes;
-        Button refreshButton = new Button();
-        refreshButton.text = "Refresh Graph";
-        refreshButton.clicked += refreshNodes;
-        Add(refreshButton);
-    }
-
-    void RefreshNodes()
-    {
-        dialogTreeEditor.OnTreeChange(treeChange.currentlyEditingTree);
     }
 }

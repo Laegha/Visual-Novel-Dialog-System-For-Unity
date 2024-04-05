@@ -33,44 +33,30 @@ public class DialogTreeEditor : EditorWindow
         treeView.editor = this;
         inspectorView = root.Q<InspectorView>();
         treeChangeView = root.Q<TreeChangeView>();
-        treeChangeView.dialogTreeEditor = this;
     }
 
-    public void OnTreeChange(DialogTree newTree)
+    private void OnGUI()
     {
-        currTree = newTree;
-        if (currTree == null)
-            return;
-
-        Debug.Log("Cambio de seleccion a " + Selection.activeObject);
-        
+        EditorGUI.BeginChangeCheck();
+        currTree = treeChangeView.TreeChange.currentlyEditingTree;
+        if (EditorGUI.EndChangeCheck())
+            treeView.PopulateView(currTree);
     }
 
     public bool IsTreeRefreshed()
     {
-        if (currTree != treeChangeView.TreeChange.currentlyEditingTree)
-        {
-            Debug.LogError("Tree must be refreshed before making any changes", this);
-            return false;
-        }
-
-        if(currTree == null)
-        {
-            Debug.LogError("Not editing any tree", this);
-            return false;
-        }
-
-        return true;
+        return currTree != null;
     }
 
     void OnNodeSelected(DialogNodeView node)
     {
-        if (!IsTreeRefreshed())
-            return;
         inspectorView.UpdateSelection(node);
     }
-    //void OnNodeSelectionChanged(DialogNodeView nodeView)
+
+    //void OnNodeDialogChange()
     //{
-    //    inspectorView.UpdateSelection
+    //    if(!IsTreeRefreshed())
+    //        return;
+    //    currTree
     //}
 }

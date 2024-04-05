@@ -2,13 +2,12 @@
     <Style src="project://database/Assets/Dialogs/DialogTrees/DialogTreeEditor.uss?fileID=7433441132597879392&amp;guid=d8ba725f708c061438e964f31c0eccc5&amp;type=3#DialogTreeEditor" />
     <SplitView fixed-pane-initial-dimension="150" name="SplitView" class="graphElement" style="position: relative; height: 1300px; width: 100%; top: auto; left: auto; opacity: 1; display: flex; visibility: visible; right: auto; min-height: auto; max-height: none;">
         <ui:VisualElement name="LeftPanel" style="flex-grow: 1; background-color: rgb(56, 56, 56); border-left-color: rgba(60, 60, 60, 0); border-right-color: rgba(60, 60, 60, 0); border-top-color: rgba(60, 60, 60, 0); border-bottom-color: rgba(60, 60, 60, 0);">
-            <ui:Label tabindex="-1" text="Inspector" parse-escape-sequences="true" display-tooltip-when-elided="true" style="height: 29px; font-size: 18px;" />
             <InspectorView style="flex-grow: 1; border-top-width: 4px; border-right-width: 4px; border-bottom-width: 4px; border-left-width: 4px; border-left-color: rgb(60, 60, 60); border-right-color: rgb(60, 60, 60); border-top-color: rgb(60, 60, 60); border-bottom-color: rgb(60, 60, 60);" />
         </ui:VisualElement>
         <ui:VisualElement name="RightPanel" style="flex-grow: 1; flex-shrink: 1; flex-direction: column;">
             <DialogTreeGraphView focusable="true" style="flex-grow: 1; height: auto;">
-                <uie:Toolbar style="left: auto; border-left-color: rgb(35, 35, 35); border-right-color: rgb(35, 35, 35); border-top-color: rgb(35, 35, 35); border-bottom-color: rgb(35, 35, 35); background-color: rgb(60, 60, 60); height: 86px;">
-                    <TreeChangeView style="width: 295px; height: 85px;" />
+                <uie:Toolbar style="left: auto; border-left-color: rgb(35, 35, 35); border-right-color: rgb(35, 35, 35); border-top-color: rgb(35, 35, 35); border-bottom-color: rgb(35, 35, 35); background-color: rgb(60, 60, 60); height: 49px;">
+                    <TreeChangeView style="width: 295px; height: 42px;" />
                 </uie:Toolbar>
             </DialogTreeGraphView>
         </ui:VisualElement>

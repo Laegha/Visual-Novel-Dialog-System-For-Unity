@@ -10,6 +10,7 @@ public class DialogNodeView : Node
 
     public DialogNode node;
     public Action<DialogNodeView> OnNodeSelected;
+    
     public DialogNodeView()
     {
         DialogNode createdNode = node != null ? node : ScriptableObject.CreateInstance("DialogNode") as DialogNode;
@@ -18,12 +19,21 @@ public class DialogNodeView : Node
         IMGUIContainer container = new IMGUIContainer(() => { editor.OnInspectorGUI(); });
         Add(container);
 
+        Button removeNodeBtn = new Button();
+        removeNodeBtn.text = "Remove Node";
+        removeNodeBtn.clicked += RemoveNode;
+        Add(removeNodeBtn);
+
         if (node == null)
             return;
         title = node.Dialog.name;
         
     }
 
+    void RemoveNode()
+    {
+        parent.hierarchy.Remove(this);
+    }
 
     public override void OnSelected()
     {

@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,6 +14,7 @@ public class DialogTreeEditor : EditorWindow
 
     DialogTree currTree;
     Dialog[] dialogs;
+    DialogNodeView[] nodeViews = new DialogNodeView[0];
 
     [MenuItem("Window/DialogTreeEditor")]
     public static void ShowExample()
@@ -38,13 +41,41 @@ public class DialogTreeEditor : EditorWindow
 
     private void OnGUI()
     {
-        EditorGUI.BeginChangeCheck();
-        currTree = treeChangeView.TreeChange.currentlyEditingTree;
-        if (EditorGUI.EndChangeCheck())
+        if (currTree != treeChangeView.TreeChange.currentlyEditingTree)
+        {
+            currTree = treeChangeView.TreeChange.currentlyEditingTree;
+            //Debug.Log("Tree Update");
             treeView.PopulateView(currTree);
+        }
 
-        EditorGUI.BeginChangeCheck();
-        //dialogs = recorrer una lista con los DialogNodeView. NodeView.Node.Dialog
+        if (nodeViews.Length != treeView.nodeViews.Count)
+        {
+            nodeViews = treeView.nodeViews.ToArray();
+            for (int i = 0; i < nodeViews.Length; i++)
+            {
+                if (nodeViews[i] == null)
+                {
+                    treeView.nodeViews.Remove(nodeViews[i]);
+                }
+            }
+        }
+
+        foreach (DialogNodeView dialogNodeView in treeView.nodeViews)
+            if (dialogNodeView == null)
+                treeView.nodeViews.Remove(dialogNodeView);
+        //treeView.nodeViews.Clear();
+
+        List<Dialog> dialogDynamicList = new List<Dialog>();
+        treeView.nodeViews.ForEach(node => dialogDynamicList.Add(node.node.Dialog));
+
+        if(dialogs != dialogDynamicList.ToArray())
+        {
+            //Debug.Log("Dialog Update");
+            //Debug.Log("Dialog Update");
+            dialogs = dialogDynamicList.ToArray();
+            currTree.Dialogs = dialogs;
+        }
+        //dialogs = recorrer una lista con los DialogNodeView.Node.Dialog
     }
 
     public bool IsTreeRefreshed()

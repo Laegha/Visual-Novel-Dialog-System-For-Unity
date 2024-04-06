@@ -38,10 +38,11 @@ public class DialogTreeGraphView : GraphView
     public void PopulateView(DialogTree dialogTree)
     {
         Dialog[] currTreeDialogs = dialogTree.Dialogs;
+        //dialogTree.Dialogs = new Dialog[0];
         foreach (Dialog dialog in currTreeDialogs)
             CreateNode(dialog);
     }
-
+    
     void CreateNode(Dialog nodeDialog)
     {
         if (!editor.IsTreeRefreshed())

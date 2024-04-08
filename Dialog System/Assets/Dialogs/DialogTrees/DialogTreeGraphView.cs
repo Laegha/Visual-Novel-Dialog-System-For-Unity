@@ -14,8 +14,6 @@ public class DialogTreeGraphView : GraphView
 
     public DialogTreeEditor editor;
 
-    public List<DialogNodeView> nodeViews = new List<DialogNodeView>();
-
     public DialogTreeGraphView() 
     {
         Insert(0, new GridBackground());
@@ -57,9 +55,10 @@ public class DialogTreeGraphView : GraphView
     {
         DialogNodeView newNodeView = new DialogNodeView();
         newNodeView.node = node;
+        newNodeView.editor = editor;
         newNodeView.OnNodeSelected = OnNodeSelected;
         newNodeView.title = "New DialogNode";
         AddElement(newNodeView);
-        nodeViews.Add(newNodeView);
+        editor.AddNode(newNodeView.node);
     }
 }

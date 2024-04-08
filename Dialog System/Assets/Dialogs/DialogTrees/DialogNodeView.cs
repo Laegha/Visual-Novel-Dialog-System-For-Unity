@@ -10,7 +10,9 @@ public class DialogNodeView : Node
 
     public DialogNode node;
     public Action<DialogNodeView> OnNodeSelected;
-    
+
+    public DialogTreeEditor editor;
+
     public DialogNodeView()
     {
         DialogNode createdNode = node != null ? node : ScriptableObject.CreateInstance("DialogNode") as DialogNode;
@@ -33,6 +35,7 @@ public class DialogNodeView : Node
     void RemoveNode()
     {
         parent.hierarchy.Remove(this);
+        editor.RemoveNode(node);
     }
 
     public override void OnSelected()

@@ -13,8 +13,7 @@ public class DialogTreeEditor : EditorWindow
     TreeChangeView treeChangeView;
 
     DialogTree currTree;
-    Dialog[] dialogs;
-    DialogNodeView[] nodeViews = new DialogNodeView[0];
+    Dictionary<DialogNode, Dialog> dialogs = new Dictionary<DialogNode, Dialog>();
 
     [MenuItem("Window/DialogTreeEditor")]
     public static void ShowExample()
@@ -44,38 +43,14 @@ public class DialogTreeEditor : EditorWindow
         if (currTree != treeChangeView.TreeChange.currentlyEditingTree)
         {
             currTree = treeChangeView.TreeChange.currentlyEditingTree;
-            //Debug.Log("Tree Update");
             treeView.PopulateView(currTree);
         }
 
-        if (nodeViews.Length != treeView.nodeViews.Count)
+        foreach(DialogNode dialogNode in dialogs.Keys) 
         {
-            nodeViews = treeView.nodeViews.ToArray();
-            for (int i = 0; i < nodeViews.Length; i++)
-            {
-                if (nodeViews[i] == null)
-                {
-                    treeView.nodeViews.Remove(nodeViews[i]);
-                }
-            }
+            if(dialogNode.Dialog != dialogs[dialogNode])
+                ChangeNodeDialog(dialogNode);
         }
-
-        foreach (DialogNodeView dialogNodeView in treeView.nodeViews)
-            if (dialogNodeView == null)
-                treeView.nodeViews.Remove(dialogNodeView);
-        //treeView.nodeViews.Clear();
-
-        List<Dialog> dialogDynamicList = new List<Dialog>();
-        treeView.nodeViews.ForEach(node => dialogDynamicList.Add(node.node.Dialog));
-
-        if(dialogs != dialogDynamicList.ToArray())
-        {
-            //Debug.Log("Dialog Update");
-            //Debug.Log("Dialog Update");
-            dialogs = dialogDynamicList.ToArray();
-            currTree.Dialogs = dialogs;
-        }
-        //dialogs = recorrer una lista con los DialogNodeView.Node.Dialog
     }
 
     public bool IsTreeRefreshed()
@@ -88,10 +63,34 @@ public class DialogTreeEditor : EditorWindow
         inspectorView.UpdateSelection(node);
     }
 
-    //void OnNodeDialogChange()
-    //{
-    //    if(!IsTreeRefreshed())
-    //        return;
-    //    currTree
-    //}
+    public void AddNode(DialogNode newNode)
+    {
+        dialogs.Add(newNode, newNode.Dialog);
+        currTree.Dialogs = GetDialogArray();
+    }
+
+    public void RemoveNode(DialogNode newNode)
+    {
+        dialogs.Remove(newNode);
+        currTree.Dialogs = GetDialogArray();
+    }
+
+    void ChangeNodeDialog(DialogNode newNode)
+    {
+        dialogs[newNode] = newNode.Dialog;
+        currTree.Dialogs = GetDialogArray();
+    }
+
+    Dialog[] GetDialogArray()
+    {
+        Dialog[] dialogArray = new Dialog[dialogs.Count];
+        int i = 0;
+        foreach(KeyValuePair<DialogNode, Dialog> keyValuePair in dialogs)
+        {
+            dialogArray[i] = keyValuePair.Value;
+            Debug.Log(keyValuePair.Value);
+            i++;
+        }
+        return dialogArray;
+    }
 }

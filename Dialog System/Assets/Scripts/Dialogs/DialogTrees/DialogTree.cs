@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewDialog", menuName = "ScriptableObjects/Dialogs/DialogTree", order = 1)]
 public class DialogTree : ScriptableObject
 {
-    Dialog[] dialogs;
+    public SerializedDictionary<string, Dialog> dialogs = new SerializedDictionary<string, Dialog>();
+    
 
-    public Dialog[] Dialogs { set{ dialogs = value; } get { return dialogs; } }
+    public SerializedDictionary<string, Dialog> Dialogs { set{ dialogs = value; } get { return dialogs; } }
 }

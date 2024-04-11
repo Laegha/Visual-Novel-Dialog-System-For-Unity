@@ -13,7 +13,7 @@ public class DialogTreeEditor : EditorWindow
     TreeChangeView treeChangeView;
 
     DialogTree currTree;
-    Dictionary<DialogNode, Dialog> dialogs = new Dictionary<DialogNode, Dialog>();
+    List<DialogNode> dialogNodes = new List<DialogNode>();
 
     [MenuItem("Window/DialogTreeEditor")]
     public static void ShowExample()
@@ -43,13 +43,21 @@ public class DialogTreeEditor : EditorWindow
         if (currTree != treeChangeView.TreeChange.currentlyEditingTree)
         {
             currTree = treeChangeView.TreeChange.currentlyEditingTree;
+            //dialogs = currTree.Dialogs;
             treeView.PopulateView(currTree);
+            dialogNodes.Clear();
         }
 
-        foreach(DialogNode dialogNode in dialogs.Keys) 
+        Debug.Log(dialogNodes.Count);
+        foreach(DialogNode dialogNode in dialogNodes)
         {
-            if(dialogNode.Dialog != dialogs[dialogNode])
+            Debug.Log(dialogNode.Dialog);
+            Debug.Log(currTree.Dialogs[dialogNode.DialogIndex]);
+            if(dialogNode.Dialog != currTree.Dialogs[dialogNode.DialogIndex])
+            {
+                Debug.Log("Dialog Changed");
                 ChangeNodeDialog(dialogNode);
+            }
         }
     }
 
@@ -65,32 +73,20 @@ public class DialogTreeEditor : EditorWindow
 
     public void AddNode(DialogNode newNode)
     {
-        dialogs.Add(newNode, newNode.Dialog);
-        currTree.Dialogs = GetDialogArray();
+        dialogNodes.Add(newNode);
+
+        if(!currTree.Dialogs.ContainsKey(newNode.DialogIndex))
+            currTree.Dialogs.Add(newNode.DialogIndex, newNode.Dialog);
     }
 
     public void RemoveNode(DialogNode newNode)
     {
-        dialogs.Remove(newNode);
-        currTree.Dialogs = GetDialogArray();
+        dialogNodes.Remove(newNode);
+        currTree.Dialogs.Remove(newNode.DialogIndex);
     }
 
     void ChangeNodeDialog(DialogNode newNode)
     {
-        dialogs[newNode] = newNode.Dialog;
-        currTree.Dialogs = GetDialogArray();
-    }
-
-    Dialog[] GetDialogArray()
-    {
-        Dialog[] dialogArray = new Dialog[dialogs.Count];
-        int i = 0;
-        foreach(KeyValuePair<DialogNode, Dialog> keyValuePair in dialogs)
-        {
-            dialogArray[i] = keyValuePair.Value;
-            Debug.Log(keyValuePair.Value);
-            i++;
-        }
-        return dialogArray;
+        currTree.Dialogs[newNode.DialogIndex] = newNode.Dialog;
     }
 }

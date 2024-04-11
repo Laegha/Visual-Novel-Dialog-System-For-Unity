@@ -67,10 +67,12 @@ public class DialogTreeGraphView : GraphView
     void CreateNodeView(DialogNode node)
     {
         DialogNodeView newNodeView = new DialogNodeView();
-        newNodeView.node = node;
+        newNodeView.node = node != null ? node : ScriptableObject.CreateInstance("DialogNode") as DialogNode;
         newNodeView.editor = editor;
         newNodeView.OnNodeSelected = OnNodeSelected;
         newNodeView.title = "New DialogNode";
+        newNodeView.Start();
+        
         AddElement(newNodeView);
         nodeViews.Add(newNodeView);
     }

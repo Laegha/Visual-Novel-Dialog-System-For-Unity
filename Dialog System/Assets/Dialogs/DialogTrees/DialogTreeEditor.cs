@@ -48,11 +48,8 @@ public class DialogTreeEditor : EditorWindow
             dialogNodes.Clear();
         }
 
-        Debug.Log(dialogNodes.Count);
         foreach(DialogNode dialogNode in dialogNodes)
         {
-            Debug.Log(dialogNode.Dialog);
-            Debug.Log(currTree.Dialogs[dialogNode.DialogIndex]);
             if(dialogNode.Dialog != currTree.Dialogs[dialogNode.DialogIndex])
             {
                 Debug.Log("Dialog Changed");

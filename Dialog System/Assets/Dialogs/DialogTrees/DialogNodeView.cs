@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -13,11 +14,9 @@ public class DialogNodeView : Node
 
     public DialogTreeEditor editor;
 
-    public DialogNodeView()
+    public void Start()
     {
-        DialogNode createdNode = node != null ? node : ScriptableObject.CreateInstance("DialogNode") as DialogNode;
-        createdNode.RegisterDialogCallback(this);
-        Editor editor = Editor.CreateEditor(node != null ? node : ScriptableObject.CreateInstance("DialogNode") as DialogNode);
+        Editor editor = Editor.CreateEditor(node);
         IMGUIContainer container = new IMGUIContainer(() => { editor.OnInspectorGUI(); });
         Add(container);
 
@@ -26,10 +25,10 @@ public class DialogNodeView : Node
         removeNodeBtn.clicked += RemoveNode;
         Add(removeNodeBtn);
 
-        if (node == null)
+        if (node.Dialog == null)
             return;
+
         title = node.Dialog.name;
-        
     }
 
     void RemoveNode()

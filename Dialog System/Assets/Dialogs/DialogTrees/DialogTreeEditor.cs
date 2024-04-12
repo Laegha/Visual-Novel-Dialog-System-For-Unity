@@ -52,7 +52,6 @@ public class DialogTreeEditor : EditorWindow
         {
             if(dialogNode.Dialog != currTree.Dialogs[dialogNode.DialogIndex])
             {
-                Debug.Log("Dialog Changed");
                 ChangeNodeDialog(dialogNode);
             }
         }
@@ -85,5 +84,6 @@ public class DialogTreeEditor : EditorWindow
     void ChangeNodeDialog(DialogNode newNode)
     {
         currTree.Dialogs[newNode.DialogIndex] = newNode.Dialog;
+        newNode.View.title = newNode.Dialog != null ? newNode.Dialog.name : "New Dialog";
     }
 }

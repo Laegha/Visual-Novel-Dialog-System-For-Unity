@@ -16,6 +16,8 @@ public class DialogNodeView : Node
 
     public void Start()
     {
+        node.View = this;
+
         Editor editor = Editor.CreateEditor(node);
         IMGUIContainer container = new IMGUIContainer(() => { editor.OnInspectorGUI(); });
         Add(container);

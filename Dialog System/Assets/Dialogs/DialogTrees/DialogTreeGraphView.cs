@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class DialogTreeGraphView : GraphView
 {
@@ -59,8 +60,8 @@ public class DialogTreeGraphView : GraphView
         DialogNode node = ScriptableObject.CreateInstance("DialogNode") as DialogNode;
         node.Dialog = value;
         node.DialogIndex = key;
-        CreateNodeView(node);
         editor.AddNode(node);
+        CreateNodeView(node);
         generatedNodes++;
     }
 
@@ -68,7 +69,7 @@ public class DialogTreeGraphView : GraphView
     {
         DialogNodeView newNodeView = new DialogNodeView();
         newNodeView.node = node != null ? node : ScriptableObject.CreateInstance("DialogNode") as DialogNode;
-        newNodeView.editor = editor;
+        newNodeView.treeEditor = editor;
         newNodeView.OnNodeSelected = OnNodeSelected;
         newNodeView.title = "New DialogNode";
         newNodeView.Start();
@@ -76,4 +77,5 @@ public class DialogTreeGraphView : GraphView
         AddElement(newNodeView);
         nodeViews.Add(newNodeView);
     }
+
 }

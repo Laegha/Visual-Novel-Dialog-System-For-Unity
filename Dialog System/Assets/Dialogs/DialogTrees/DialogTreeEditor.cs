@@ -12,7 +12,7 @@ public class DialogTreeEditor : EditorWindow
     InspectorView inspectorView;
     TreeChangeView treeChangeView;
 
-    DialogTree currTree;
+    public DialogTree currTree = null;
     List<DialogNode> dialogNodes = new List<DialogNode>();
 
     [MenuItem("Window/DialogTreeEditor")]
@@ -71,14 +71,18 @@ public class DialogTreeEditor : EditorWindow
     {
         dialogNodes.Add(newNode);
 
-        if(!currTree.Dialogs.ContainsKey(newNode.DialogIndex))
-            currTree.Dialogs.Add(newNode.DialogIndex, newNode.Dialog);
+        if (currTree.Dialogs.ContainsKey(newNode.DialogIndex))
+            return;
+
+        currTree.Dialogs.Add(newNode.DialogIndex, newNode.Dialog);
+        currTree.NodePositions.Add(newNode.DialogIndex, Vector2.zero);
     }
 
     public void RemoveNode(DialogNode newNode)
     {
         dialogNodes.Remove(newNode);
         currTree.Dialogs.Remove(newNode.DialogIndex);
+        currTree.NodePositions.Remove(newNode.DialogIndex);
     }
 
     void ChangeNodeDialog(DialogNode newNode)

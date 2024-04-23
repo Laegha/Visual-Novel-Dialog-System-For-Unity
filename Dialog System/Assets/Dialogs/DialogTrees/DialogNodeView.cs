@@ -12,7 +12,7 @@ public class DialogNodeView : Node
     public DialogNode node;
     public Action<DialogNodeView> OnNodeSelected;
 
-    public DialogTreeEditor editor;
+    public DialogTreeEditor treeEditor;
 
     public void Start()
     {
@@ -27,16 +27,19 @@ public class DialogNodeView : Node
         removeNodeBtn.clicked += RemoveNode;
         Add(removeNodeBtn);
 
+        style.left = treeEditor.currTree.NodePositions[node.DialogIndex].x;
+        style.top = treeEditor.currTree.NodePositions[node.DialogIndex].y;
+
         if (node.Dialog == null)
             return;
 
         title = node.Dialog.name;
-    }
 
+    }
     void RemoveNode()
     {
         parent.hierarchy.Remove(this);
-        editor.RemoveNode(node);
+        treeEditor.RemoveNode(node);
     }
 
     public override void OnSelected()
@@ -46,8 +49,10 @@ public class DialogNodeView : Node
             OnNodeSelected.Invoke(this);
     }
 
-    public void OnDialogChange(ChangeEvent<DialogNode> evt)
+    public override void SetPosition(Rect newPos)
     {
-        Debug.Log(evt);
+        base.SetPosition(newPos);
+        Vector2 newPosVector = new Vector2(newPos.xMin, newPos.yMin);
+        treeEditor.currTree.NodePositions[node.DialogIndex] = newPosVector;
     }
 }

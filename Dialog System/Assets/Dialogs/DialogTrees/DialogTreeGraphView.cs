@@ -78,4 +78,8 @@ public class DialogTreeGraphView : GraphView
         nodeViews.Add(newNodeView);
     }
 
+    public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
+    {
+        return ports.ToList().Where(endport => endport.direction != startPort.direction && endport.node != startPort.node).ToList();
+    }
 }

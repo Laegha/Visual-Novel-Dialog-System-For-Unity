@@ -26,11 +26,6 @@ public class DialogNodeView : Node
         IMGUIContainer container = new IMGUIContainer(() => { editor.OnInspectorGUI(); });
         Add(container);
 
-        Button removeNodeBtn = new Button();
-        removeNodeBtn.text = "Remove Node";
-        removeNodeBtn.clicked += RemoveNode;
-        Add(removeNodeBtn);
-
         style.left = treeEditor.currTree.NodePositions[node.DialogIndex].x;
         style.top = treeEditor.currTree.NodePositions[node.DialogIndex].y;
 
@@ -56,17 +51,12 @@ public class DialogNodeView : Node
         output = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(DialogChangeCondition));
         output.portName = "";
         outputContainer.Add(output);
+        
     }
 
     public override Port InstantiatePort(Orientation orientation, Direction direction, Port.Capacity capacity, Type type)
     {
         return Port.Create<DialogEdge>(orientation, direction, capacity, type);
-    }
-
-    void RemoveNode()
-    {
-        parent.hierarchy.Remove(this);
-        treeEditor.RemoveNode(node);
     }
 
     public override void OnSelected()

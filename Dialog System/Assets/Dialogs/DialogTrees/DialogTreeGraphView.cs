@@ -40,11 +40,14 @@ public class DialogTreeGraphView : GraphView
     int generatedNodes = 0;
     public void PopulateView(DialogTree dialogTree)
     {
+        graphViewChanged -= OnGraphViewChanged;
         generatedNodes = 0;
         if (nodeViews.Count > 0)
             foreach (DialogNodeView nodeView in nodeViews)
                 nodeView.RemoveFromHierarchy();
 
+        graphViewChanged += OnGraphViewChanged;
+        
         if (dialogTree == null)
             return; 
 
@@ -52,12 +55,31 @@ public class DialogTreeGraphView : GraphView
             CreateNode(dialog.Key, dialog.Value);
     }
     
+    GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
+    {
+        if(graphViewChange.elementsToRemove != null)
+            graphViewChange.elementsToRemove.ForEach(elem =>
+            {
+                DialogNodeView nodeView = elem as DialogNodeView;
+                if(nodeView != null)
+                {
+                    nodeView.RemoveFromHierarchy();
+                    editor.RemoveNode(nodeView.node);
+                    Debug.Log("Removed node");
+                }
+
+            });
+
+
+        return graphViewChange;
+    }
+
     void CreateNode(string key, Dialog value)
     {
         if (!editor.IsTreeRefreshed())
             return;
-        //DialogNode node = new DialogNode(nodeDialog);
-        DialogNode node = ScriptableObject.CreateInstance("DialogNode") as DialogNode;
+        //DialogNode node = ScriptableObject.CreateInstance("DialogNode") as DialogNode;
+        DialogNode node = new DialogNode();
         node.Dialog = value;
         node.DialogIndex = key;
         editor.AddNode(node);
@@ -68,7 +90,8 @@ public class DialogTreeGraphView : GraphView
     void CreateNodeView(DialogNode node)
     {
         DialogNodeView newNodeView = new DialogNodeView();
-        newNodeView.node = node != null ? node : ScriptableObject.CreateInstance("DialogNode") as DialogNode;
+        //newNodeView.node = node != null ? node : ScriptableObject.CreateInstance("DialogNode") as DialogNode;
+        newNodeView.node = node != null ? node : new DialogNode();
         newNodeView.treeEditor = editor;
         newNodeView.OnNodeSelected = OnNodeSelected;
         newNodeView.title = "New DialogNode";

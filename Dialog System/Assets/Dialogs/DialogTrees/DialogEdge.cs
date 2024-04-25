@@ -5,15 +5,17 @@ using UnityEngine;
 
 public class DialogEdge : Edge
 {
-    [SerializeField] DialogChangeCondition[] dialogChangeConditions;
     public InspectorView inspectorView;
+
+    public DialogConnection dialogConnection = new DialogConnection();
+
     public override void OnSelected()
     {
         base.OnSelected();
 
         Debug.Log("Edge succesfully selected");
 
-        inspectorView.UpdateSelection(this);
+        inspectorView.UpdateSelection(dialogConnection);
     }
 
     public void UpdateValues()

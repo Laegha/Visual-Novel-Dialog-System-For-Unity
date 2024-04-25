@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class DialogNode : ScriptableObject
+public class DialogNode : Object
 {
     [SerializeField] Dialog dialog;
     string dialogIndex;

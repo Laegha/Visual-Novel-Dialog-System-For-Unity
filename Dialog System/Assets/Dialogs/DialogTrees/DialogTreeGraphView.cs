@@ -69,6 +69,15 @@ public class DialogTreeGraphView : GraphView
                 }
 
             });
+        if (graphViewChange.edgesToCreate != null)
+            graphViewChange.edgesToCreate.ForEach(edge =>
+            {
+                DialogEdge dialogEdge = edge as DialogEdge;
+                if(dialogEdge != null)
+                {
+                    dialogEdge.inspectorView = editor.FindElementInHierarchy("InspectorView") as InspectorView;
+                }
+            });
 
 
         return graphViewChange;

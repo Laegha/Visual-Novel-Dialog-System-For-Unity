@@ -24,6 +24,9 @@ public class Dialog : ScriptableObject
     float speakerShrinkTime = .25f;
 
     [SerializeField] TextEffectApplier[] textEffectAppliers;
+
+    public Dictionary<Dialog, DialogChangeCondition[]> possibleNextDialogs = new Dictionary<Dialog, DialogChangeCondition[]>();
+
     public void Start() => movementHandler = new CharacterMovementHandler(thisDialogDriver);
 
     public void Update()

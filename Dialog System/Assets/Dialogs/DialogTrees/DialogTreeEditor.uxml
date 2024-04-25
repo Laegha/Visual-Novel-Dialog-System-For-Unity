@@ -6,8 +6,8 @@
         </ui:VisualElement>
         <ui:VisualElement name="RightPanel" style="flex-grow: 1; flex-shrink: 1; flex-direction: column;">
             <DialogTreeGraphView focusable="true" style="flex-grow: 1; height: auto;">
-                <uie:Toolbar style="left: auto; border-left-color: rgb(35, 35, 35); border-right-color: rgb(35, 35, 35); border-top-color: rgb(35, 35, 35); border-bottom-color: rgb(35, 35, 35); background-color: rgb(60, 60, 60); height: 49px;">
-                    <TreeChangeView style="width: 295px; height: 42px;" />
+                <uie:Toolbar style="left: auto; border-left-color: rgb(35, 35, 35); border-right-color: rgb(35, 35, 35); border-top-color: rgb(35, 35, 35); border-bottom-color: rgb(35, 35, 35); background-color: rgb(60, 60, 60); height: 42px;">
+                    <TreeChangeView style="width: 295px; height: 42px; left: 4px;" />
                 </uie:Toolbar>
             </DialogTreeGraphView>
         </ui:VisualElement>

@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -32,7 +34,7 @@ public class DialogTreeEditor : EditorWindow
         root.Add(labelFromUXML);
 
         treeView = root.Q<DialogTreeGraphView>();
-        treeView.OnNodeSelected = OnNodeSelected;
+        //treeView.OnNodeSelected = OnNodeSelected;
         treeView.editor = this;
         inspectorView = root.Q<InspectorView>();
         treeChangeView = root.Q<TreeChangeView>();
@@ -44,8 +46,8 @@ public class DialogTreeEditor : EditorWindow
         {
             currTree = treeChangeView.TreeChange.currentlyEditingTree;
             //dialogs = currTree.Dialogs;
-            treeView.PopulateView(currTree);
             dialogNodes.Clear();
+            treeView.PopulateView(currTree);
         }
 
         foreach(DialogNode dialogNode in dialogNodes)
@@ -60,11 +62,6 @@ public class DialogTreeEditor : EditorWindow
     public bool IsTreeRefreshed()
     {
         return currTree != null;
-    }
-
-    void OnNodeSelected(DialogNodeView node)
-    {
-        inspectorView.UpdateSelection(node);
     }
 
     public void AddNode(DialogNode newNode)
@@ -89,5 +86,10 @@ public class DialogTreeEditor : EditorWindow
     {
         currTree.Dialogs[newNode.DialogIndex] = newNode.Dialog;
         newNode.View.title = newNode.Dialog != null ? newNode.Dialog.name : "New Dialog";
+    }
+
+    public VisualElement FindElementInHierarchy(string type)
+    {
+        return rootVisualElement.Q(type);
     }
 }

@@ -11,7 +11,6 @@ public class TreeChangeView : VisualElement
 
     TreeChange treeChange = ScriptableObject.CreateInstance("TreeChange") as TreeChange;
 
-
     public TreeChange TreeChange { get { return treeChange; } }
 
     public TreeChangeView()

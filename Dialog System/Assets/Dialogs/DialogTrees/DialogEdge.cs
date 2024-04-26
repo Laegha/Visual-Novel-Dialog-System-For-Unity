@@ -7,17 +7,20 @@ public class DialogEdge : Edge
 {
     public InspectorView inspectorView;
 
-    public DialogConnection dialogConnection = new DialogConnection();
+    public DialogConnection dialogConnection = ScriptableObject.CreateInstance("DialogConnection") as DialogConnection;
 
     public override void OnSelected()
     {
         base.OnSelected();
 
-        Debug.Log("Edge succesfully selected");
-
         inspectorView.UpdateSelection(dialogConnection);
     }
+    public override void OnUnselected()
+    {
+        base.OnUnselected();
 
+
+    }
     public void UpdateValues()
     {
         DialogNodeView nodeView = input.node as DialogNodeView;

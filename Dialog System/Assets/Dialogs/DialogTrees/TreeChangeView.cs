@@ -9,8 +9,8 @@ public class TreeChangeView : VisualElement
 {
     public new class UxmlFactory : UxmlFactory<TreeChangeView, VisualElement.UxmlTraits> { }
 
-    //TreeChange treeChange = ScriptableObject.CreateInstance("TreeChange") as TreeChange;
-    TreeChange treeChange = new TreeChange();
+    TreeChange treeChange = ScriptableObject.CreateInstance("TreeChange") as TreeChange;
+
 
     public TreeChange TreeChange { get { return treeChange; } }
 

@@ -75,7 +75,8 @@ public class DialogTreeGraphView : GraphView
                 DialogEdge dialogEdge = edge as DialogEdge;
                 if(dialogEdge != null)
                 {
-                    dialogEdge.inspectorView = editor.FindElementInHierarchy("InspectorView") as InspectorView;
+                    Debug.Log("Edge modified");
+                    dialogEdge.inspectorView = editor.inspectorView;
                 }
             });
 
@@ -87,8 +88,7 @@ public class DialogTreeGraphView : GraphView
     {
         if (!editor.IsTreeRefreshed())
             return;
-        //DialogNode node = ScriptableObject.CreateInstance("DialogNode") as DialogNode;
-        DialogNode node = new DialogNode();
+        DialogNode node = ScriptableObject.CreateInstance("DialogNode") as DialogNode;
         node.Dialog = value;
         node.DialogIndex = key;
         editor.AddNode(node);
@@ -99,8 +99,7 @@ public class DialogTreeGraphView : GraphView
     void CreateNodeView(DialogNode node)
     {
         DialogNodeView newNodeView = new DialogNodeView();
-        //newNodeView.node = node != null ? node : ScriptableObject.CreateInstance("DialogNode") as DialogNode;
-        newNodeView.node = node != null ? node : new DialogNode();
+        newNodeView.node = node != null ? node : ScriptableObject.CreateInstance("DialogNode") as DialogNode;
         newNodeView.treeEditor = editor;
         newNodeView.OnNodeSelected = OnNodeSelected;
         newNodeView.title = "New DialogNode";

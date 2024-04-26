@@ -11,7 +11,7 @@ public class DialogTreeEditor : EditorWindow
     [SerializeField]
     private VisualTreeAsset m_VisualTreeAsset = default;
     DialogTreeGraphView treeView;
-    InspectorView inspectorView;
+    public InspectorView inspectorView;
     TreeChangeView treeChangeView;
 
     public DialogTree currTree = null;
@@ -86,10 +86,5 @@ public class DialogTreeEditor : EditorWindow
     {
         currTree.Dialogs[newNode.DialogIndex] = newNode.Dialog;
         newNode.View.title = newNode.Dialog != null ? newNode.Dialog.name : "New Dialog";
-    }
-
-    public VisualElement FindElementInHierarchy(string type)
-    {
-        return rootVisualElement.Q(type);
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TreeChange : Object
+public class TreeChange : ScriptableObject
 {
     public DialogTree currentlyEditingTree;
 

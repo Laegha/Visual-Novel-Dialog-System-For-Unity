@@ -5,9 +5,21 @@ using UnityEngine;
 
 public class DialogEdge : Edge
 {
-    public InspectorView inspectorView;
+    InspectorView inspectorView;
 
-    public DialogConnection dialogConnection = ScriptableObject.CreateInstance("DialogConnection") as DialogConnection;
+    DialogConnection dialogConnection = ScriptableObject.CreateInstance("DialogConnection") as DialogConnection;
+
+    public void Start(InspectorView inspectorView)
+    {
+        this.inspectorView = inspectorView;
+        DialogNodeView outputNode = output.node as DialogNodeView;
+        DialogNodeView inputNode = input.node as DialogNodeView;
+
+        dialogConnection.connectionName = outputNode.title + "->" + inputNode.title;
+
+        dialogConnection.outputDialog = outputNode.node;
+        dialogConnection.inputDialog = inputNode.node;
+    }
 
     public override void OnSelected()
     {
@@ -15,15 +27,28 @@ public class DialogEdge : Edge
 
         inspectorView.UpdateSelection(dialogConnection);
     }
+
     public override void OnUnselected()
     {
         base.OnUnselected();
 
-
+        inspectorView.RemoveCurrentSelection(dialogConnection);
     }
+
     public void UpdateValues()
     {
         DialogNodeView nodeView = input.node as DialogNodeView;
         //nodeView.node.Dialog.possibleNextDialogs
+    }
+
+    public void DialogChanged()
+    {
+        if(dialogConnection.outputDialog.Dialog == dialogConnection.inputDialog.Dialog)
+
+    }
+
+    public void OnRemoved()
+    {
+
     }
 }

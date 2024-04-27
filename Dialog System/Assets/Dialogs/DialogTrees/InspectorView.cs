@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -9,22 +10,25 @@ public class InspectorView : VisualElement
 
     public InspectorView() { }
 
-    public Object editingObject;
-    IMGUIContainer currContainer;
+    //public Object editingObject;
+    //IMGUIContainer currContainer;
+    public Dictionary<Object, IMGUIContainer> editingObjectsContainers = new Dictionary<Object, IMGUIContainer>();
 
     public void UpdateSelection(Object editingObject) 
     {
         Editor editor = Editor.CreateEditor(editingObject);
         IMGUIContainer container = new IMGUIContainer(() => { editor.OnInspectorGUI(); });
         Add(container);
-        Remove(container);
-        currContainer = container;
-        this.editingObject = editingObject;
+
+        editingObjectsContainers.Add(editingObject, container);
+        //currContainer = container;
+        //this.editingObject = editingObject;
     }
 
-    public void RemoveCurrentSelection()
+    public void RemoveCurrentSelection(Object removedObject)
     {
-        Remove(currContainer);
-        editingObject = null;
+        Remove(editingObjectsContainers[removedObject]);
+        editingObjectsContainers.Remove(removedObject);
+        //editingObject = null;
     }
 }

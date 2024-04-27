@@ -3,7 +3,6 @@ using UnityEngine.Events;
 using AYellowpaper.SerializedCollections;
 using UnityEditor.Localization;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Linq;
 
 [CreateAssetMenu(fileName = "NewDialog", menuName = "ScriptableObjects/Dialogs/Dialog", order = 1)]
@@ -25,7 +24,9 @@ public class Dialog : ScriptableObject
 
     [SerializeField] TextEffectApplier[] textEffectAppliers;
 
-    public Dictionary<Dialog, DialogChangeCondition[]> possibleNextDialogs = new Dictionary<Dialog, DialogChangeCondition[]>();
+    //these will be affected when editing the tree and used to change between dialogs during runtime
+    [HideInInspector] public Dictionary<Dialog, DialogChangeCondition[]> possibleNextDialogs = new Dictionary<Dialog, DialogChangeCondition[]>();
+    [HideInInspector] public List<DialogChangeCondition> loopConditions = new List<DialogChangeCondition>();
 
     public void Start() => movementHandler = new CharacterMovementHandler(thisDialogDriver);
 

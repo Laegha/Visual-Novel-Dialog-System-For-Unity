@@ -65,7 +65,13 @@ public class DialogTreeGraphView : GraphView
                 {
                     nodeView.RemoveFromHierarchy();
                     editor.RemoveNode(nodeView.node);
-                    Debug.Log("Removed node");
+                }
+
+                DialogEdge dialogEdge = elem as DialogEdge;
+                if(dialogEdge != null)
+                {
+                    dialogEdge.RemoveFromHierarchy();
+                    dialogEdge.OnRemoved();
                 }
 
             });
@@ -75,8 +81,7 @@ public class DialogTreeGraphView : GraphView
                 DialogEdge dialogEdge = edge as DialogEdge;
                 if(dialogEdge != null)
                 {
-                    Debug.Log("Edge modified");
-                    dialogEdge.inspectorView = editor.inspectorView;
+                    dialogEdge.Start(editor.inspectorView);
                 }
             });
 

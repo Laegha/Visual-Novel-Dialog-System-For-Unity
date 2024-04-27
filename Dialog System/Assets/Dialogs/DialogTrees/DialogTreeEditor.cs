@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,6 +9,7 @@ public class DialogTreeEditor : EditorWindow
     [SerializeField]
     private VisualTreeAsset m_VisualTreeAsset = default;
     DialogTreeGraphView treeView;
+
     public InspectorView inspectorView;
     TreeChangeView treeChangeView;
 
@@ -54,7 +53,39 @@ public class DialogTreeEditor : EditorWindow
         {
             if(dialogNode.Dialog != currTree.Dialogs[dialogNode.DialogIndex])
             {
+                
                 ChangeNodeDialog(dialogNode);
+            }
+        }
+
+        foreach(Object editingObject in inspectorView.editingObjectsContainers.Keys)
+        {
+            DialogConnection dialogConnection = editingObject as DialogConnection;
+            if(dialogConnection != null)
+            {
+                //check changes in dialogConnection
+                List<DialogChangeCondition> dialogChangeConditions = dialogConnection.outputDialog.Dialog.possibleNextDialogs[dialogConnection.inputDialog.Dialog].ToList();
+                List<DialogChangeCondition> edgeChangeConditions = dialogConnection.dialogChangeConditions.ToList();
+
+                foreach(DialogChangeCondition changeCondition in dialogConnection.dialogChangeConditions)
+                {
+                    if (!dialogChangeConditions.Contains(changeCondition))
+                    {
+                        dialogChangeConditions.Add(changeCondition);
+                        Debug.Log("Added " + changeCondition + " to finalArray");
+                    }
+
+                }
+                foreach(DialogChangeCondition changeCondition in dialogConnection.outputDialog.Dialog.possibleNextDialogs[dialogConnection.inputDialog.Dialog])
+                {
+                    if (!edgeChangeConditions.Contains(changeCondition))
+                    {
+                        dialogChangeConditions.Remove(changeCondition);
+                        Debug.Log("Removed " + changeCondition + " from finalArray");
+                    }
+                }
+
+                dialogConnection.outputDialog.Dialog.possibleNextDialogs[dialogConnection.inputDialog.Dialog] = dialogChangeConditions.ToArray();
             }
         }
     }

@@ -53,7 +53,6 @@ public class DialogTreeEditor : EditorWindow
         {
             if(dialogNode.Dialog != currTree.Dialogs[dialogNode.DialogIndex])
             {
-                
                 ChangeNodeDialog(dialogNode);
             }
         }
@@ -63,29 +62,10 @@ public class DialogTreeEditor : EditorWindow
             DialogConnection dialogConnection = editingObject as DialogConnection;
             if(dialogConnection != null)
             {
-                //check changes in dialogConnection
-                List<DialogChangeCondition> dialogChangeConditions = dialogConnection.outputDialog.Dialog.possibleNextDialogs[dialogConnection.inputDialog.Dialog].ToList();
-                List<DialogChangeCondition> edgeChangeConditions = dialogConnection.dialogChangeConditions.ToList();
+                if (!dialogConnection.isConnectionPossible)
+                    continue;
 
-                foreach(DialogChangeCondition changeCondition in dialogConnection.dialogChangeConditions)
-                {
-                    if (!dialogChangeConditions.Contains(changeCondition))
-                    {
-                        dialogChangeConditions.Add(changeCondition);
-                        Debug.Log("Added " + changeCondition + " to finalArray");
-                    }
-
-                }
-                foreach(DialogChangeCondition changeCondition in dialogConnection.outputDialog.Dialog.possibleNextDialogs[dialogConnection.inputDialog.Dialog])
-                {
-                    if (!edgeChangeConditions.Contains(changeCondition))
-                    {
-                        dialogChangeConditions.Remove(changeCondition);
-                        Debug.Log("Removed " + changeCondition + " from finalArray");
-                    }
-                }
-
-                dialogConnection.outputDialog.Dialog.possibleNextDialogs[dialogConnection.inputDialog.Dialog] = dialogChangeConditions.ToArray();
+                dialogConnection.Update();
             }
         }
     }
@@ -117,5 +97,7 @@ public class DialogTreeEditor : EditorWindow
     {
         currTree.Dialogs[newNode.DialogIndex] = newNode.Dialog;
         newNode.View.title = newNode.Dialog != null ? newNode.Dialog.name : "New Dialog";
+        newNode.InputConnections.ForEach(connection => connection.UpdateDialogs()); 
+        newNode.OutputConnections.ForEach(connection => connection.UpdateDialogs());
     }
 }

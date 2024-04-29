@@ -17,8 +17,15 @@ public class DialogEdge : Edge
 
         dialogConnection.connectionName = outputNode.title + "->" + inputNode.title;
 
-        dialogConnection.outputDialog = outputNode.node;
-        dialogConnection.inputDialog = inputNode.node;
+        dialogConnection.outputNode = outputNode.node;
+        dialogConnection.inputNode = inputNode.node;
+        dialogConnection.prevOutputDialog = outputNode.node.Dialog;
+        dialogConnection.prevInputDialog = inputNode.node.Dialog;
+
+        outputNode.node.OutputConnections.Add(dialogConnection);
+        inputNode.node.InputConnections.Add(dialogConnection);
+
+        dialogConnection.UpdateDialogs();
     }
 
     public override void OnSelected()
@@ -33,18 +40,6 @@ public class DialogEdge : Edge
         base.OnUnselected();
 
         inspectorView.RemoveCurrentSelection(dialogConnection);
-    }
-
-    public void UpdateValues()
-    {
-        DialogNodeView nodeView = input.node as DialogNodeView;
-        //nodeView.node.Dialog.possibleNextDialogs
-    }
-
-    public void DialogChanged()
-    {
-        if(dialogConnection.outputDialog.Dialog == dialogConnection.inputDialog.Dialog)
-
     }
 
     public void OnRemoved()

@@ -28,6 +28,7 @@ public class DialogConnection : ScriptableObject
             else
                 prevOutputDialog.possibleNextDialogs.Remove(prevInputDialog);
 
+            dialogChangeConditions = new DialogChangeCondition[0];
         }
 
         if (inputNode.Dialog == null || outputNode.Dialog == null)

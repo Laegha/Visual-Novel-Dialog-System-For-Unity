@@ -51,12 +51,19 @@ public class DialogDriver : MonoBehaviour
         if (!context.performed)
             return;
 
-        if(lineFinished)
+        if(!lineFinished)
         {
-            StartNewLine(dialog.dialogTable.StringTables[0][currLineIndex.ToString()].Value);
-        }
-        else
             SkipCurrentLine();
+            return;
+        }
+
+        if (currLineIndex >= dialog.dialogTable.StringTables[0].Count)
+        {
+            EndDialog();
+            return;
+        }
+
+        StartNewLine(dialog.dialogTable.StringTables[0][currLineIndex.ToString()].Value);
     }
 
     void StartNewLine(string newLine)
@@ -81,10 +88,10 @@ public class DialogDriver : MonoBehaviour
     #region SpeakCycle
     IEnumerator SpeakCycle(string line)
     {
-        char currChar = line[currCharIndex];
-
         if (lineFinished)
             yield break;
+
+        char currChar = line[currCharIndex];
 
         dialogText.text += currChar;
         textEffectsManager.Update();
@@ -111,8 +118,6 @@ public class DialogDriver : MonoBehaviour
     {
         currLineIndex++;
         lineFinished = true;
-        if (currLineIndex >= dialog.dialogTable.StringTables[0].Count)
-            EndDialog();
     }
 
     void EndDialog()

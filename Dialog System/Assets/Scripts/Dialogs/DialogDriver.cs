@@ -45,7 +45,7 @@ public class DialogDriver : MonoBehaviour
         if(lineFinished)
             textEffectsManager.Update();
     }
-
+    #region LineManagement
     public void NextLinearLine(InputAction.CallbackContext context)
     {
         if (!context.performed)
@@ -77,7 +77,8 @@ public class DialogDriver : MonoBehaviour
         dialogText.text = dialog.dialogTable.StringTables[0][currLineIndex.ToString()].Value;
         LineFinished();
     }
-
+    #endregion
+    #region SpeakCycle
     IEnumerator SpeakCycle(string line)
     {
         char currChar = line[currCharIndex];
@@ -105,11 +106,18 @@ public class DialogDriver : MonoBehaviour
 
         StartCoroutine(SpeakCycle(line));
     }
-
+    #endregion
     void LineFinished()
     {
-        lineFinished = true;
         currLineIndex++;
+        lineFinished = true;
+        if (currLineIndex >= dialog.dialogTable.StringTables[0].Count)
+            EndDialog();
+    }
+
+    void EndDialog()
+    {
+
     }
 }
 

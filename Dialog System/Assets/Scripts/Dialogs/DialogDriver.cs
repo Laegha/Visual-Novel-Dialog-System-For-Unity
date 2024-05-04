@@ -20,12 +20,14 @@ public class DialogDriver : MonoBehaviour
     static readonly float timeAfterComma = 0.1f;
     static readonly float timeAfterDot = 0.2f;
 
+    string currBranch = "Branch: 0";
     int currCharIndex = 0;
     int currLineIndex = 0;
 
     [HideInInspector] public bool lineFinished = false;
 
     public TextEffectsManager textEffectsManager;
+    public ChoiceHandler choiceHandler;
 
     private void Awake()
     {
@@ -84,7 +86,27 @@ public class DialogDriver : MonoBehaviour
         dialogText.text = dialog.dialogTable.StringTables[0][currLineIndex.ToString()].Value;
         LineFinished();
     }
+
+    void LineFinished()
+    {
+        dialog.CheckChoices(currBranch + ": " + currLineIndex);//the format is "Branch: (branchIndexes separated by "-"): currLineIndex
+        currLineIndex++;
+        lineFinished = true;
+    }
+
+    public void OnBranchChanged(int newBranchIndex)
+    {
+        currBranch += "-" + newBranchIndex;
+        currLineIndex = 0;
+    }
+
     #endregion
+
+    void EndDialog()
+    {
+
+    }
+
     #region SpeakCycle
     IEnumerator SpeakCycle(string line)
     {
@@ -114,16 +136,7 @@ public class DialogDriver : MonoBehaviour
         StartCoroutine(SpeakCycle(line));
     }
     #endregion
-    void LineFinished()
-    {
-        currLineIndex++;
-        lineFinished = true;
-    }
-
-    void EndDialog()
-    {
-
-    }
+    
 }
 
 [System.Serializable]

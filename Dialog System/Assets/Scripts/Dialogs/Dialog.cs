@@ -10,8 +10,14 @@ public class Dialog : ScriptableObject
 {
     public StringTableCollection dialogTable;
 
+    [Header("Pre-Line events in Dialog")]
     [SerializedDictionary("Line", "Events")]
     [SerializeField] SerializedDictionary<int, UnityEvent> dialogEvents;
+    [Header("TextEffects in Dialog")]
+    [SerializeField] TextEffectApplier[] textEffectAppliers;
+    [Header("All choices in dialog")]
+    [SerializedDictionary("Line", "Choice")]
+    [SerializeField] SerializedDictionary<string, ChoiceOption[]> dialogChoices;
 
     [HideInInspector] public DialogDriver thisDialogDriver;
     
@@ -22,7 +28,6 @@ public class Dialog : ScriptableObject
     Shrinker shrinkingCharacter = null;
     float speakerShrinkTime = .25f;
 
-    [SerializeField] TextEffectApplier[] textEffectAppliers;
 
     //these will be affected when editing the tree and used to change between dialogs during runtime
     [HideInInspector] public Dictionary<Dialog, DialogChangeCondition[]> possibleNextDialogs = new Dictionary<Dialog, DialogChangeCondition[]>();
@@ -78,6 +83,17 @@ public class Dialog : ScriptableObject
 
         TextEffectApplier textEffectApplier = textEffectAppliers.Where(x => x.line == currLine).ToArray()[0];
         thisDialogDriver.textEffectsManager.SetNewEffect(textEffectApplier.word, textEffectApplier.timesAppearedInLine, textEffectApplier.effect, textEffectApplier.affectsAllWord ? null : textEffectApplier.affectedCharsIndexes);
+
+    }
+
+    public bool CheckChoices(string line)
+    {
+        if(dialogChoices.ContainsKey(line))
+        {
+            thisDialogDriver.choiceHandler.DisplayChoiceButtons(dialogChoices[line]);
+            return true;
+        }
+        return false;
 
     }
 

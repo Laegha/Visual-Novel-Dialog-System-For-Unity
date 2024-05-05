@@ -82,7 +82,7 @@ public class Dialog : ScriptableObject
             return;
 
         TextEffectApplier textEffectApplier = textEffectAppliers.Where(x => x.line == currLine).ToArray()[0];
-        thisDialogDriver.textEffectsManager.SetNewEffect(textEffectApplier.word, textEffectApplier.timesAppearedInLine, textEffectApplier.effect, textEffectApplier.affectsAllWord ? null : textEffectApplier.affectedCharsIndexes);
+        thisDialogDriver.dialogTreeDriver.textEffectsManager.SetNewEffect(textEffectApplier.word, textEffectApplier.timesAppearedInLine, textEffectApplier.effect, textEffectApplier.affectsAllWord ? null : textEffectApplier.affectedCharsIndexes);
 
     }
 
@@ -90,7 +90,7 @@ public class Dialog : ScriptableObject
     {
         if(dialogChoices.ContainsKey(line))
         {
-            thisDialogDriver.choiceHandler.DisplayChoiceButtons(dialogChoices[line]);
+            thisDialogDriver.dialogTreeDriver.choiceHandler.DisplayChoiceButtons(dialogChoices[line]);
             return true;
         }
         return false;
@@ -100,12 +100,12 @@ public class Dialog : ScriptableObject
     public void ChangeSpeaker(DialogCharacter newSpeaker)
     {
         //text color changes
-        thisDialogDriver.dialogText.color = newSpeaker.textColor;
+        thisDialogDriver.dialogTreeDriver.dialogText.color = newSpeaker.textColor;
         //thisDialogDriver.dialogText.material.SetColor("Outline", newSpeaker.textColor);
 
         //name changes
-        thisDialogDriver.speakerNameBox.color = newSpeaker.textColor;
-        thisDialogDriver.speakerNameBox.text = newSpeaker.characterName;
+        thisDialogDriver.dialogTreeDriver.speakerNameBox.color = newSpeaker.textColor;
+        thisDialogDriver.dialogTreeDriver.speakerNameBox.text = newSpeaker.characterName;
 
         //current speaker shrikns
         if (thisDialogDriver.currSpeakerName != null && thisDialogDriver.currSpeakerName != "")
@@ -121,7 +121,7 @@ public class Dialog : ScriptableObject
     public void SetNextUsedCharacter(DialogCharacter nextUsedCharacter) => this.nextUsedCharacter = nextUsedCharacter;
     public void AddCharacter(string characterPosition)
     {
-        GameObject newCharacter = Instantiate(nextUsedCharacter.characterPrefab, thisDialogDriver.characterPositions[characterPosition]);
+        GameObject newCharacter = Instantiate(nextUsedCharacter.characterPrefab, thisDialogDriver.dialogTreeDriver.characterPositions[characterPosition]);
         newCharacter.transform.localPosition = new Vector2(newCharacter.transform.localPosition.x, 0);
         newCharacter.transform.SetParent(Camera.main.transform, true); //no se si deberia ser true o false
         thisDialogDriver.currDialogingCharacters.Add(nextUsedCharacter.characterName, newCharacter);

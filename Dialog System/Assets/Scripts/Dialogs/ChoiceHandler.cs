@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ChoiceHandler
 {
-    DialogDriver thisDialogDriver;
+    DialogTreeDriver dialogTreeDriver;
 
-    public ChoiceHandler(DialogDriver dialogDriver)
+    public ChoiceHandler(DialogTreeDriver dialogDriver)
     { 
-        thisDialogDriver = dialogDriver;
+        dialogTreeDriver = dialogDriver;
     }
 
     public void DisplayChoiceButtons(ChoiceOption[] options)
@@ -18,6 +18,6 @@ public class ChoiceHandler
 
     void OnOptionSelected(int selectedBranchIndex)
     {
-        thisDialogDriver.OnBranchChanged(selectedBranchIndex);
+        dialogTreeDriver.currDialogDriver.OnBranchChanged(selectedBranchIndex);
     }
 }

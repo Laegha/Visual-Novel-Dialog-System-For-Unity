@@ -51,10 +51,8 @@ public class DialogDriver
             dialogTreeDriver.textEffectsManager.Update();
     }
     #region LineManagement
-    public void NextLinearLine(InputAction.CallbackContext context)
+    public void NextLinearLine()
     {
-        if (!context.performed)
-            return;
 
         if(!lineFinished)
         {

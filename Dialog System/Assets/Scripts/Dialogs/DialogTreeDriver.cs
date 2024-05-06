@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class DialogTreeDriver : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class DialogTreeDriver : MonoBehaviour
     public TextMeshProUGUI speakerNameBox;
     public SerializedDictionary<string, Transform> characterPositions; //this string should be changed for an enum that includes left, mid-left, mid, mid-right, right
 
+    public ChoiceButtonManager choiceButtonManager;
 
     private void Awake()
     {
@@ -25,6 +27,9 @@ public class DialogTreeDriver : MonoBehaviour
     private void Start()
     {
         textEffectsManager = new TextEffectsManager(dialogText);
+        choiceHandler = new ChoiceHandler(this);
+
+        choiceButtonManager.clickedAction = choiceHandler.OnOptionSelected;
         currDialogDriver.Start();
     }
 
@@ -33,6 +38,13 @@ public class DialogTreeDriver : MonoBehaviour
         if (currDialogDriver == null)
             return;
         currDialogDriver.Update();
+    }
+
+    public void NextLinearLine(InputAction.CallbackContext context)
+    {
+        if (!context.performed)
+            return;
+        currDialogDriver.NextLinearLine();
     }
 
     public void OnDialogEnded()

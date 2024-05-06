@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewDialog", menuName = "ScriptableObjects/Dialogs/DialogTree", order = 1)]
+[CreateAssetMenu(fileName = "NewDialogTree", menuName = "ScriptableObjects/Dialogs/DialogTree", order = 1)]
 public class DialogTree : ScriptableObject
 {
     Dictionary<string, Dialog> dialogs = new Dictionary<string, Dialog>();

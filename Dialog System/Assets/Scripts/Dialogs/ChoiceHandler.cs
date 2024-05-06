@@ -5,18 +5,20 @@ using UnityEngine;
 public class ChoiceHandler
 {
     DialogTreeDriver dialogTreeDriver;
+    ChoiceButtonManager choiceButtonManager;
 
-    public ChoiceHandler(DialogTreeDriver dialogDriver)
+    public ChoiceHandler(DialogTreeDriver dialogTreeDriver)
     { 
-        dialogTreeDriver = dialogDriver;
+        this.dialogTreeDriver = dialogTreeDriver;
+        choiceButtonManager = this.dialogTreeDriver.choiceButtonManager;
     }
 
     public void DisplayChoiceButtons(ChoiceOption[] options)
     {
-        
+        choiceButtonManager.GenerateButtons(options);
     }
 
-    void OnOptionSelected(int selectedBranchIndex)
+    public void OnOptionSelected(int selectedBranchIndex)
     {
         dialogTreeDriver.currDialogDriver.OnBranchChanged(selectedBranchIndex);
     }

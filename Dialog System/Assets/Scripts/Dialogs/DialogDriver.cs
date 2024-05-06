@@ -6,13 +6,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class DialogDriver : MonoBehaviour
+public class DialogDriver
 {
-    [SerializeField] Dialog dialog;
+    public DialogTreeDriver dialogTreeDriver;
+    Dialog dialog;
 
-    public TextMeshProUGUI dialogText;
-    public TextMeshProUGUI speakerNameBox;
-    public SerializedDictionary<string, Transform> characterPositions; //this string should be changed for an enum that includes left, mid-left, mid, mid-right, right
     public Dictionary<string, GameObject> currDialogingCharacters = new Dictionary<string, GameObject>(); //this is suposed to store each active prefab with the name of the character it belongs to
     [HideInInspector] public string currSpeakerName;
 
@@ -20,43 +18,55 @@ public class DialogDriver : MonoBehaviour
     static readonly float timeAfterComma = 0.1f;
     static readonly float timeAfterDot = 0.2f;
 
+    string currBranch = "Branch: 0";
     int currCharIndex = 0;
     int currLineIndex = 0;
 
     [HideInInspector] public bool lineFinished = false;
 
-    public TextEffectsManager textEffectsManager;
+    TextMeshProUGUI dialogText;
+    TextEffectsManager textEffectsManager;
 
-    private void Awake()
+    public DialogDriver(DialogTreeDriver dialogTreeDriver, Dialog dialog)
     {
+        this.dialogTreeDriver = dialogTreeDriver;
+        this.dialog = dialog;
         dialog.thisDialogDriver = this;
+
+        dialogText = dialogTreeDriver.dialogText;
+        textEffectsManager = dialogTreeDriver.textEffectsManager;
     }
 
-    private void Start() 
+    public void Start() 
     {
-        textEffectsManager = new TextEffectsManager(dialogText);
         dialog.Start();
         StartNewLine(dialog.dialogTable.StringTables[0][currLineIndex.ToString()].Value);
     }
-    private void Update()
+
+    public void Update()
     {
         if (dialog != null)
             dialog.Update();
         if(lineFinished)
-            textEffectsManager.Update();
+            dialogTreeDriver.textEffectsManager.Update();
     }
     #region LineManagement
-    public void NextLinearLine(InputAction.CallbackContext context)
+    public void NextLinearLine()
     {
-        if (!context.performed)
-            return;
 
-        if(lineFinished)
+        if(!lineFinished)
         {
-            StartNewLine(dialog.dialogTable.StringTables[0][currLineIndex.ToString()].Value);
-        }
-        else
             SkipCurrentLine();
+            return;
+        }
+
+        if (currLineIndex >= dialog.dialogTable.StringTables[0].Count)
+        {
+            EndDialog();
+            return;
+        }
+
+        StartNewLine(dialog.dialogTable.StringTables[0][currLineIndex.ToString()].Value);
     }
 
     void StartNewLine(string newLine)
@@ -69,7 +79,7 @@ public class DialogDriver : MonoBehaviour
         dialog.CheckEvents(currLineIndex);
 
         lineFinished = false;
-        StartCoroutine(SpeakCycle(newLine));
+        dialogTreeDriver.StartCoroutine(SpeakCycle(newLine));
     }
 
     void SkipCurrentLine()
@@ -77,14 +87,34 @@ public class DialogDriver : MonoBehaviour
         dialogText.text = dialog.dialogTable.StringTables[0][currLineIndex.ToString()].Value;
         LineFinished();
     }
+
+    void LineFinished()
+    {
+        dialog.CheckChoices(currBranch + ": " + currLineIndex);//the format is "Branch: (branchIndexes separated by "-"): currLineIndex
+        currLineIndex++;
+        lineFinished = true;
+    }
+
+    public void OnBranchChanged(int newBranchIndex)
+    {
+        currBranch += "-" + newBranchIndex;
+        currLineIndex = 0;
+    }
+
     #endregion
+
+    void EndDialog()
+    {
+
+    }
+
     #region SpeakCycle
     IEnumerator SpeakCycle(string line)
     {
-        char currChar = line[currCharIndex];
-
         if (lineFinished)
             yield break;
+
+        char currChar = line[currCharIndex];
 
         dialogText.text += currChar;
         textEffectsManager.Update();
@@ -104,21 +134,10 @@ public class DialogDriver : MonoBehaviour
             yield break;
         }
 
-        StartCoroutine(SpeakCycle(line));
+        dialogTreeDriver.StartCoroutine(SpeakCycle(line));
     }
     #endregion
-    void LineFinished()
-    {
-        currLineIndex++;
-        lineFinished = true;
-        if (currLineIndex >= dialog.dialogTable.StringTables[0].Count)
-            EndDialog();
-    }
-
-    void EndDialog()
-    {
-
-    }
+    
 }
 
 [System.Serializable]

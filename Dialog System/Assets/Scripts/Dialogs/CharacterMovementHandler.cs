@@ -17,11 +17,11 @@ public class CharacterMovementHandler
     {
         //move thisDialogDriver.currDialogingCharacters[characterName] to thisDialogDriver.characterPositions[newPosition]
         if (movers[0] == null)
-            movers[0] = new Mover(thisDialogDriver.characterPositions[newPosition].localPosition.x, nextMovingFast ? fastMoveTime : normalMoveTime, thisDialogDriver.currDialogingCharacters[characterName].transform);
+            movers[0] = new Mover(thisDialogDriver.dialogTreeDriver.characterPositions[newPosition].localPosition.x, nextMovingFast ? fastMoveTime : normalMoveTime, thisDialogDriver.currDialogingCharacters[characterName].transform);
         else if (movers[1] == null)
-            movers[1] = new Mover(thisDialogDriver.characterPositions[newPosition].localPosition.x, nextMovingFast ? fastMoveTime : normalMoveTime, thisDialogDriver.currDialogingCharacters[characterName].transform);
+            movers[1] = new Mover(thisDialogDriver.dialogTreeDriver.characterPositions[newPosition].localPosition.x, nextMovingFast ? fastMoveTime : normalMoveTime, thisDialogDriver.currDialogingCharacters[characterName].transform);
         else if (movers[2] == null)
-            movers[2] = new Mover(thisDialogDriver.characterPositions[newPosition].localPosition.x, nextMovingFast ? fastMoveTime : normalMoveTime, thisDialogDriver.currDialogingCharacters[characterName].transform);
+            movers[2] = new Mover(thisDialogDriver.dialogTreeDriver.characterPositions[newPosition].localPosition.x, nextMovingFast ? fastMoveTime : normalMoveTime, thisDialogDriver.currDialogingCharacters[characterName].transform);
 
     }
 

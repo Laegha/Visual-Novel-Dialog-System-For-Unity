@@ -155,7 +155,6 @@ MonoBehaviour:
               m_StringArgument: Concerned
               m_BoolArgument: 0
             m_CallState: 2
-  thisDialogDriver: {fileID: 0}
   textEffectAppliers:
   - line: 0
     word: name
@@ -163,3 +162,5 @@ MonoBehaviour:
     affectsAllWord: 1
     affectedCharsIndexes: 
     effect: {fileID: 11400000, guid: 5b2f8213838e90341875339bdc515c3b, type: 2}
+  thisDialogDriver: {fileID: 0}
+  loopConditions: []

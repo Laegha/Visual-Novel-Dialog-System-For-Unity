@@ -182,8 +182,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2011238618}
-        m_TargetAssemblyTypeName: DialogDriver, Assembly-CSharp
+      - m_Target: {fileID: 2011238620}
+        m_TargetAssemblyTypeName: DialogTreeDriver, Assembly-CSharp
         m_MethodName: NextLinearLine
         m_Mode: 0
         m_Arguments:
@@ -1693,7 +1693,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2011238619}
-  - component: {fileID: 2011238618}
+  - component: {fileID: 2011238620}
+  - component: {fileID: 2011238621}
   m_Layer: 0
   m_Name: DialogDriver
   m_TagString: Untagged
@@ -1701,35 +1702,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2011238618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2011238617}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3cedab27c8fbda468f6e9c5d53a3540, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialog: {fileID: 11400000, guid: 6d70d526ed5c02f4d86b04ff1d006a99, type: 2}
-  dialogText: {fileID: 1785617441}
-  speakerNameBox: {fileID: 1978216831}
-  characterPositions:
-    _serializedList:
-    - Key: Left
-      Value: {fileID: 902643164}
-    - Key: MiddleLeft
-      Value: {fileID: 1695719216}
-    - Key: Middle
-      Value: {fileID: 706644569}
-    - Key: MiddleRight
-      Value: {fileID: 1471674203}
-    - Key: Right
-      Value: {fileID: 1413515752}
-  currSpeakerName: 
-  lineFinished: 0
 --- !u!4 &2011238619
 Transform:
   m_ObjectHideFlags: 0
@@ -1745,6 +1717,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2011238620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011238617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8383d6a8c78ddaa43809828d8c51a6dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogTree: {fileID: 0}
+  dialogText: {fileID: 0}
+  speakerNameBox: {fileID: 0}
+  characterPositions:
+    _serializedList: []
+  choiceButtonManager: {fileID: 2011238621}
+--- !u!114 &2011238621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2011238617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ee22feb01bb20c4aa88caafc9c36bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  butonPrefab: {fileID: 0}
+  grid: {fileID: 0}
 --- !u!1 &2136622664
 GameObject:
   m_ObjectHideFlags: 0

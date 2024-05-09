@@ -30,8 +30,7 @@ public class Dialog : ScriptableObject
 
 
     //these will be affected when editing the tree and used to change between dialogs during runtime
-    [HideInInspector] public Dictionary<Dialog, DialogChangeCondition[]> possibleNextDialogs = new Dictionary<Dialog, DialogChangeCondition[]>();
-    [HideInInspector] public List<DialogChangeCondition> loopConditions = new List<DialogChangeCondition>();
+    [HideInInspector] public Dictionary<Dialog, List<DialogChangeCondition>> possibleNextDialogs = new Dictionary<Dialog, List<DialogChangeCondition>>();
 
     public void Start() => movementHandler = new CharacterMovementHandler(thisDialogDriver);
 

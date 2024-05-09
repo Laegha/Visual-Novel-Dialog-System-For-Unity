@@ -11,7 +11,6 @@ public class DialogNodeView : Node
     public new class UxmlFactory : UxmlFactory<DialogNodeView, Node.UxmlTraits> { }
 
     public DialogNode node;
-    public Action<DialogNodeView> OnNodeSelected;
 
     public DialogTreeEditor treeEditor;
 
@@ -57,13 +56,6 @@ public class DialogNodeView : Node
     public override Port InstantiatePort(Orientation orientation, Direction direction, Port.Capacity capacity, Type type)
     {
         return Port.Create<DialogEdge>(orientation, direction, capacity, type);
-    }
-
-    public override void OnSelected()
-    {
-        base.OnSelected();
-        if (OnNodeSelected != null)
-            OnNodeSelected.Invoke(this);
     }
 
     public override void SetPosition(Rect newPos)

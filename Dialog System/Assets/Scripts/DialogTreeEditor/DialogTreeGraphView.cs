@@ -11,8 +11,6 @@ public class DialogTreeGraphView : GraphView
 {
     public new class UxmlFactory : UxmlFactory<DialogTreeGraphView, GraphView.UxmlTraits> { }
 
-    public Action<DialogNodeView> OnNodeSelected;
-
     public DialogTreeEditor editor;
 
     List<DialogNodeView> nodeViews = new List<DialogNodeView>();
@@ -41,18 +39,18 @@ public class DialogTreeGraphView : GraphView
     public void PopulateView(DialogTree dialogTree)
     {
         graphViewChanged -= OnGraphViewChanged;
-        generatedNodes = 0;
-        if (nodeViews.Count > 0)
-            foreach (DialogNodeView nodeView in nodeViews)
-                nodeView.RemoveFromHierarchy();
-
+        DeleteElements(graphElements);
         graphViewChanged += OnGraphViewChanged;
         
+        generatedNodes = 0;
+     
         if (dialogTree == null)
             return; 
 
         foreach (KeyValuePair<string, Dialog> dialog in dialogTree.Dialogs)
             CreateNode(dialog.Key, dialog.Value);
+
+
     }
     
     GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
@@ -106,7 +104,6 @@ public class DialogTreeGraphView : GraphView
         DialogNodeView newNodeView = new DialogNodeView();
         newNodeView.node = node != null ? node : ScriptableObject.CreateInstance("DialogNode") as DialogNode;
         newNodeView.treeEditor = editor;
-        newNodeView.OnNodeSelected = OnNodeSelected;
         newNodeView.title = "New DialogNode";
         newNodeView.Start();
         

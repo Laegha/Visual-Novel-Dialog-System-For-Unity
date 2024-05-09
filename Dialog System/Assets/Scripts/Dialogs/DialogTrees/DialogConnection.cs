@@ -24,6 +24,9 @@ public class DialogConnection : ScriptableObject
             foreach (DialogChangeCondition changeCondition in dialogChangeConditions)
                 prevOutputDialog.possibleNextDialogs[prevInputDialog].Remove(changeCondition);
 
+            if (prevOutputDialog.possibleNextDialogs[prevInputDialog].Count <= 0)
+                prevOutputDialog.possibleNextDialogs.Remove(prevInputDialog);
+
             dialogChangeConditions = new DialogChangeCondition[0];
         }
 

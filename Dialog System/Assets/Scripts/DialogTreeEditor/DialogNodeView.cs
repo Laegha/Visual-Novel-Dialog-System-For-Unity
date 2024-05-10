@@ -29,8 +29,11 @@ public class DialogNodeView : Node
         style.left = treeEditor.currTree.NodePositions[node.DialogIndex].x;
         style.top = treeEditor.currTree.NodePositions[node.DialogIndex].y;
 
-        CreateInput();
-        CreateOutput();
+        if(node.DialogIndex != "0")
+            CreateInput();
+
+        if (!treeEditor.currTree.Dialogs.ContainsValue(node.Dialog))
+            CreateOutput();
 
         if (node.Dialog == null)
             return;

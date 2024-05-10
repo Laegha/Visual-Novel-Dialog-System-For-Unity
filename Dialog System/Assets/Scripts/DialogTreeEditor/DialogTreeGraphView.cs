@@ -6,6 +6,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Build.Pipeline;
 
 public class DialogTreeGraphView : GraphView
 {
@@ -50,7 +51,21 @@ public class DialogTreeGraphView : GraphView
         foreach (KeyValuePair<string, Dialog> dialog in dialogTree.Dialogs)
             CreateNode(dialog.Key, dialog.Value);
 
+        foreach(DialogNodeView dialogNodeView in nodeViews)
+        {
+            if (dialogNodeView.node.Dialog.possibleNextDialogs.Count <= 0)
+                continue;
 
+            foreach(KeyValuePair<Dialog, List<DialogChangeCondition>> connectedNode in dialogNodeView.node.Dialog.possibleNextDialogs)
+            {
+
+            }
+        }
+    }
+
+    DialogNodeView GetNodeView(Dialog nodeViewDialog)
+    {
+        return nodeViews.Where(x => x.node.Dialog == nodeViewDialog).ToArray()[0];
     }
     
     GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)

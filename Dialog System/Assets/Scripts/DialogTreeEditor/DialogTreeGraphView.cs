@@ -33,7 +33,7 @@ public class DialogTreeGraphView : GraphView
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
         base.BuildContextualMenu(evt);
-        evt.menu.AppendAction($"[{Type.GetType("DialogNode")}]", (a) => CreateNode(generatedNodes.ToString(), null));
+        evt.menu.AppendAction($"[{Type.GetType("DialogNode")}]", (a) => CreateNode(generatedNodes, null));
     }
 
     int generatedNodes = 0;
@@ -48,8 +48,11 @@ public class DialogTreeGraphView : GraphView
         if (dialogTree == null)
             return; 
 
-        foreach (KeyValuePair<string, Dialog> dialog in dialogTree.Dialogs)
-            CreateNode(dialog.Key, dialog.Value);
+        for(int i = 0; i < dialogTree.Dialogs.Count; i++)
+        {
+            CreateNode(i, dialogTree.Dialogs[i]);
+
+        }
 
         foreach(DialogNodeView dialogNodeView in nodeViews)
         {
@@ -63,9 +66,9 @@ public class DialogTreeGraphView : GraphView
         }
     }
 
-    DialogNodeView GetNodeView(Dialog nodeViewDialog)
+    DialogNodeView GetNodeView(Dialog outputDialog, Dialog inputDialog)
     {
-        return nodeViews.Where(x => x.node.Dialog == nodeViewDialog).ToArray()[0];
+        return nodeViews.Where(x => x.node.Dialog == inputDialog && x.node.Dialog).ToArray()[0];
     }
     
     GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
@@ -102,7 +105,7 @@ public class DialogTreeGraphView : GraphView
         return graphViewChange;
     }
 
-    void CreateNode(string key, Dialog value)
+    void CreateNode(int key, Dialog value)
     {
         if (!editor.IsTreeRefreshed())
             return;

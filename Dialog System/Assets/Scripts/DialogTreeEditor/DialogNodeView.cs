@@ -14,8 +14,8 @@ public class DialogNodeView : Node
 
     public DialogTreeEditor treeEditor;
 
-    Port input;
-    Port output;
+    public Port input;
+    public Port output;
 
     public void Start()
     {

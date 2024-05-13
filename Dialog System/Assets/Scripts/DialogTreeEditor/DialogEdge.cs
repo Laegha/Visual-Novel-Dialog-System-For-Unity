@@ -7,7 +7,7 @@ public class DialogEdge : Edge
 {
     InspectorView inspectorView;
 
-    DialogConnection dialogConnection = ScriptableObject.CreateInstance("DialogConnection") as DialogConnection;
+    public DialogConnection dialogConnection = ScriptableObject.CreateInstance("DialogConnection") as DialogConnection;
 
     public void Start(InspectorView inspectorView)
     {

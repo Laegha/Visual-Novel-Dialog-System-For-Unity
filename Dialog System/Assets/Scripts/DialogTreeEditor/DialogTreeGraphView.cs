@@ -48,27 +48,17 @@ public class DialogTreeGraphView : GraphView
         if (dialogTree == null)
             return; 
 
-        for(int i = 0; i < dialogTree.Dialogs.Count; i++)
+        for (int i = 0; i < dialogTree.Dialogs.Count; i++)
         {
-            CreateNode(i, dialogTree.Dialogs[i]);
-
-        }
-
-        foreach(DialogNodeView dialogNodeView in nodeViews)
-        {
-            if (dialogNodeView.node.Dialog.possibleNextDialogs.Count <= 0)
-                continue;
-
-            foreach(KeyValuePair<Dialog, List<DialogChangeCondition>> connectedNode in dialogNodeView.node.Dialog.possibleNextDialogs)
+            DialogNodeView outputNodeView = CreateNode(i, dialogTree.Dialogs[i]).View;
+            int j = 1;
+            foreach (KeyValuePair<Dialog, List<DialogChangeCondition>> nextDialog in dialogTree.Dialogs[i].possibleNextDialogs)
             {
-
+                DialogNodeView inputNodeView = CreateNode(i + j, nextDialog.Key).View;
+                CreateEdge(outputNodeView, inputNodeView, nextDialog.Value.ToArray());
+                j++;
             }
         }
-    }
-
-    DialogNodeView GetNodeView(Dialog outputDialog, Dialog inputDialog)
-    {
-        return nodeViews.Where(x => x.node.Dialog == inputDialog && x.node.Dialog).ToArray()[0];
     }
     
     GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
@@ -81,6 +71,10 @@ public class DialogTreeGraphView : GraphView
                 {
                     nodeView.RemoveFromHierarchy();
                     editor.RemoveNode(nodeView.node);
+
+                    nodeViews.Remove(nodeView);
+                    if (nodeView.node.DialogIndex == 0)
+                        nodeViews[0].Remove(nodeViews[0].inputContainer);
                 }
 
                 DialogEdge dialogEdge = elem as DialogEdge;
@@ -105,16 +99,17 @@ public class DialogTreeGraphView : GraphView
         return graphViewChange;
     }
 
-    void CreateNode(int key, Dialog value)
+    DialogNode CreateNode(int key, Dialog value)
     {
         if (!editor.IsTreeRefreshed())
-            return;
+            return null;
         DialogNode node = ScriptableObject.CreateInstance("DialogNode") as DialogNode;
         node.Dialog = value;
         node.DialogIndex = key;
         editor.AddNode(node);
         CreateNodeView(node);
         generatedNodes++;
+        return node;
     }
 
     void CreateNodeView(DialogNode node)
@@ -127,6 +122,13 @@ public class DialogTreeGraphView : GraphView
         
         AddElement(newNodeView);
         nodeViews.Add(newNodeView);
+    }
+
+    void CreateEdge(DialogNodeView outputNode, DialogNodeView inputNode, DialogChangeCondition[] dialogChangeConditions)
+    {
+        DialogEdge dialogEdge = outputNode.output.ConnectTo(inputNode.input) as DialogEdge;
+        dialogEdge.Start(editor.inspectorView);
+        dialogEdge.dialogConnection.dialogChangeConditions = dialogChangeConditions;
     }
 
     public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)

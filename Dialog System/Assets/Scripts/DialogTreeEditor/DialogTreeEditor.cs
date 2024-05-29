@@ -79,18 +79,18 @@ public class DialogTreeEditor : EditorWindow
     {
         dialogNodes.Add(newNode);
 
-        if (currTree.Dialogs.Contains(newNode.Dialog))
+        if (currTree.Dialogs.ContainsKey(newNode.DialogIndex))
             return;
 
-        currTree.Dialogs.Add(newNode.Dialog);
-        currTree.NodePositions.Add(Vector2.zero);
+        currTree.Dialogs.Add(newNode.DialogIndex, newNode.Dialog);
+        currTree.NodePositions.Add(newNode.DialogIndex, Vector2.zero);
     }
 
     public void RemoveNode(DialogNode newNode)
     {
         dialogNodes.Remove(newNode);
-        currTree.Dialogs.Remove(newNode.Dialog);
-        currTree.NodePositions.Remove(currTree.NodePositions[newNode.DialogIndex]);
+        currTree.Dialogs.Remove(newNode.DialogIndex);
+        currTree.NodePositions.Remove(newNode.DialogIndex);
     }
 
     void ChangeNodeDialog(DialogNode newNode)

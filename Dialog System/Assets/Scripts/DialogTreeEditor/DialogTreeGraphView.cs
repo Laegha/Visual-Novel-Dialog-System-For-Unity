@@ -16,7 +16,7 @@ public class DialogTreeGraphView : GraphView
 
     List<DialogNodeView> nodeViews = new List<DialogNodeView>();
 
-    public DialogTreeGraphView() 
+    public DialogTreeGraphView()
     {
         Insert(0, new GridBackground());
 
@@ -33,7 +33,7 @@ public class DialogTreeGraphView : GraphView
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
         base.BuildContextualMenu(evt);
-        evt.menu.AppendAction($"[{Type.GetType("DialogNode")}]", (a) => CreateNode(generatedNodes, null));
+        evt.menu.AppendAction($"[{Type.GetType("DialogNode")}]", (a) => CreateNode(generatedNodes.ToString(), null));
     }
 
     int generatedNodes = 0;
@@ -42,43 +42,49 @@ public class DialogTreeGraphView : GraphView
         graphViewChanged -= OnGraphViewChanged;
         DeleteElements(graphElements);
         graphViewChanged += OnGraphViewChanged;
-        
+
         generatedNodes = 0;
-     
+
         if (dialogTree == null)
-            return; 
+            return;
 
         for (int i = 0; i < dialogTree.Dialogs.Count; i++)
         {
-            DialogNodeView outputNodeView = CreateNode(i, dialogTree.Dialogs[i]).View;
+            DialogNodeView outputNodeView = CreateNode(i.ToString(), dialogTree.Dialogs[i.ToString()]).View;
             int j = 1;
-            foreach (KeyValuePair<Dialog, List<DialogChangeCondition>> nextDialog in dialogTree.Dialogs[i].possibleNextDialogs)
+            foreach (KeyValuePair<Dialog, List<DialogChangeCondition>> nextDialog in dialogTree.Dialogs[i.ToString()].possibleNextDialogs)
             {
-                DialogNodeView inputNodeView = CreateNode(i + j, nextDialog.Key).View;
+                DialogNodeView inputNodeView = CreateNode((i + j).ToString(), nextDialog.Key).View;
                 CreateEdge(outputNodeView, inputNodeView, nextDialog.Value.ToArray());
                 j++;
             }
         }
     }
-    
+
+
+    DialogNodeView GetNodeView(Dialog nodeViewDialog)
+    {
+        return nodeViews.Where(x => x.node.Dialog == nodeViewDialog).ToArray()[0];
+    }
+
     GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
     {
-        if(graphViewChange.elementsToRemove != null)
+        if (graphViewChange.elementsToRemove != null)
             graphViewChange.elementsToRemove.ForEach(elem =>
             {
                 DialogNodeView nodeView = elem as DialogNodeView;
-                if(nodeView != null)
+                if (nodeView != null)
                 {
                     nodeView.RemoveFromHierarchy();
                     editor.RemoveNode(nodeView.node);
 
                     nodeViews.Remove(nodeView);
-                    if (nodeView.node.DialogIndex == 0)
+                    if (nodeView.node.DialogIndex == "0")
                         nodeViews[0].Remove(nodeViews[0].inputContainer);
                 }
 
                 DialogEdge dialogEdge = elem as DialogEdge;
-                if(dialogEdge != null)
+                if (dialogEdge != null)
                 {
                     dialogEdge.RemoveFromHierarchy();
                     dialogEdge.OnRemoved();
@@ -89,7 +95,7 @@ public class DialogTreeGraphView : GraphView
             graphViewChange.edgesToCreate.ForEach(edge =>
             {
                 DialogEdge dialogEdge = edge as DialogEdge;
-                if(dialogEdge != null)
+                if (dialogEdge != null)
                 {
                     dialogEdge.Start(editor.inspectorView);
                 }
@@ -99,7 +105,7 @@ public class DialogTreeGraphView : GraphView
         return graphViewChange;
     }
 
-    DialogNode CreateNode(int key, Dialog value)
+    DialogNode CreateNode(string key, Dialog value)
     {
         if (!editor.IsTreeRefreshed())
             return null;
@@ -119,7 +125,7 @@ public class DialogTreeGraphView : GraphView
         newNodeView.treeEditor = editor;
         newNodeView.title = "New DialogNode";
         newNodeView.Start();
-        
+
         AddElement(newNodeView);
         nodeViews.Add(newNodeView);
     }

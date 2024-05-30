@@ -25,9 +25,6 @@ public class DialogNodeView : Node
         IMGUIContainer container = new IMGUIContainer(() => { editor.OnInspectorGUI(); });
         Add(container);
 
-        style.left = treeEditor.currTree.NodePositions[node.DialogIndex].x;
-        style.top = treeEditor.currTree.NodePositions[node.DialogIndex].y;
-
         CreateInput();
         CreateOutput();
 
@@ -62,6 +59,5 @@ public class DialogNodeView : Node
     {
         base.SetPosition(newPos);
         Vector2 newPosVector = new Vector2(newPos.xMin, newPos.yMin);
-        treeEditor.currTree.NodePositions[node.DialogIndex] = newPosVector;
     }
 }

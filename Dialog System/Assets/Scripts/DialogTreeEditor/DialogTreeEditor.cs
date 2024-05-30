@@ -51,9 +51,10 @@ public class DialogTreeEditor : EditorWindow
 
         foreach(DialogNode dialogNode in dialogNodes)
         {
-            if(dialogNode.Dialog != currTree.Dialogs[dialogNode.DialogIndex])
+            if(dialogNode.Dialog != dialogNode.PrevDialog)
             {
                 ChangeNodeDialog(dialogNode);
+
             }
         }
 
@@ -70,7 +71,7 @@ public class DialogTreeEditor : EditorWindow
         }
     }
 
-    public bool IsTreeRefreshed()
+    public bool IsTreeSet()
     {
         return currTree != null;
     }
@@ -78,25 +79,29 @@ public class DialogTreeEditor : EditorWindow
     public void AddNode(DialogNode newNode)
     {
         dialogNodes.Add(newNode);
-
-        if (currTree.Dialogs.ContainsKey(newNode.DialogIndex))
-            return;
-
-        currTree.Dialogs.Add(newNode.DialogIndex, newNode.Dialog);
-        currTree.NodePositions.Add(newNode.DialogIndex, Vector2.zero);
     }
 
-    public void RemoveNode(DialogNode newNode)
+    public void RemoveNode(DialogNode removedNode)
     {
-        dialogNodes.Remove(newNode);
-        currTree.Dialogs.Remove(newNode.DialogIndex);
-        currTree.NodePositions.Remove(newNode.DialogIndex);
+        dialogNodes.Remove(removedNode);
+        ReloadNodeIndexes(removedNode.DialogIndex);
+    }
+
+    void ReloadNodeIndexes(int removedIndex)
+    {
+        for (int i = removedIndex; i < dialogNodes.Count; i++)
+        {
+            dialogNodes[i].DialogIndex = i;
+            //call a function on dialogNodes[i].View to handle ports
+        }
     }
 
     void ChangeNodeDialog(DialogNode newNode)
     {
-        currTree.Dialogs[newNode.DialogIndex] = newNode.Dialog;
+        newNode.PrevDialog = newNode.Dialog;
+
         newNode.View.title = newNode.Dialog != null ? newNode.Dialog.name : "New Dialog";
+
         newNode.InputConnections.ForEach(connection => connection.UpdateDialogs()); 
         newNode.OutputConnections.ForEach(connection => connection.UpdateDialogs());
     }

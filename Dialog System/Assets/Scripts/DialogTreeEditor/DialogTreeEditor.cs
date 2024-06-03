@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TreeEditor;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -79,21 +80,13 @@ public class DialogTreeEditor : EditorWindow
     public void AddNode(DialogNode newNode)
     {
         dialogNodes.Add(newNode);
+        if (newNode.IsInitial)
+            currTree.initialDialog = newNode.Dialog;
     }
 
     public void RemoveNode(DialogNode removedNode)
     {
         dialogNodes.Remove(removedNode);
-        ReloadNodeIndexes(removedNode.DialogIndex);
-    }
-
-    void ReloadNodeIndexes(int removedIndex)
-    {
-        for (int i = removedIndex; i < dialogNodes.Count; i++)
-        {
-            dialogNodes[i].DialogIndex = i;
-            //call a function on dialogNodes[i].View to handle ports
-        }
     }
 
     void ChangeNodeDialog(DialogNode newNode)
@@ -104,5 +97,8 @@ public class DialogTreeEditor : EditorWindow
 
         newNode.InputConnections.ForEach(connection => connection.UpdateDialogs()); 
         newNode.OutputConnections.ForEach(connection => connection.UpdateDialogs());
+
+        if (newNode.IsInitial)
+            currTree.initialDialog = newNode.Dialog;
     }
 }

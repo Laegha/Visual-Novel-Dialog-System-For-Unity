@@ -8,7 +8,7 @@ public class DialogConnection : ScriptableObject
     [HideInInspector] public string connectionName;
     [HideInInspector] public bool isConnectionPossible;
 
-    public DialogChangeCondition[] dialogChangeConditions = new DialogChangeCondition[0];
+    public DialogChangeCondition[] _connectionChangeConditions = new DialogChangeCondition[0];
 
     [HideInInspector] public DialogNode outputNode;
     [HideInInspector] public DialogNode inputNode;
@@ -21,13 +21,13 @@ public class DialogConnection : ScriptableObject
         if(isConnectionPossible)
         {
             //reboot previous dialog transitions
-            foreach (DialogChangeCondition changeCondition in dialogChangeConditions)
+            foreach (DialogChangeCondition changeCondition in _connectionChangeConditions)
                 prevOutputDialog.possibleNextDialogs[prevInputDialog].Remove(changeCondition);
 
             if (prevOutputDialog.possibleNextDialogs[prevInputDialog].Count <= 0)
                 prevOutputDialog.possibleNextDialogs.Remove(prevInputDialog);
 
-            dialogChangeConditions = new DialogChangeCondition[0];
+            _connectionChangeConditions = new DialogChangeCondition[0];
         }
 
         if (inputNode.Dialog == null || outputNode.Dialog == null)
@@ -43,24 +43,27 @@ public class DialogConnection : ScriptableObject
 
         connectionName = outputNode.View.title + "->" + inputNode.View.title;
 
+        if (!outputNode.Dialog.possibleNextDialogs.ContainsKey(inputNode.Dialog))
+            outputNode.Dialog.possibleNextDialogs.Add(inputNode.Dialog, new List<DialogChangeCondition>());
+
     }
 
     public void Update()
     {
-        List<DialogChangeCondition> dialogChangeConditions = new List<DialogChangeCondition>();
-        outputNode.Dialog.possibleNextDialogs[inputNode.Dialog].ForEach(condition => dialogChangeConditions.Add(condition));
+        List<DialogChangeCondition> nodeChangeConditions = new List<DialogChangeCondition>();
+        outputNode.Dialog.possibleNextDialogs[inputNode.Dialog].ForEach(condition => nodeChangeConditions.Add(condition));
 
-        //check for missing values in Dialog.loopConditions/possibleNextDialogs
-        foreach (DialogChangeCondition edgeChangeCondition in this.dialogChangeConditions)
-            if (!dialogChangeConditions.Contains(edgeChangeCondition))
-                dialogChangeConditions.Add(edgeChangeCondition);
+        //check for missing values in Dialog.possibleNextDialogs
+        foreach (DialogChangeCondition edgeChangeCondition in _connectionChangeConditions)
+            if (!nodeChangeConditions.Contains(edgeChangeCondition))
+                nodeChangeConditions.Add(edgeChangeCondition);
 
-        //check for extra values in Dialog.loopConditions/possibleNextDialogs
+        //check for extra values in Dialog.possibleNextDialogs
         foreach (DialogChangeCondition dialogChangeCondition in outputNode.Dialog.possibleNextDialogs[inputNode.Dialog])
-            if (!this.dialogChangeConditions.Contains(dialogChangeCondition))
-                dialogChangeConditions.Remove(dialogChangeCondition);
+            if (!_connectionChangeConditions.Contains(dialogChangeCondition))
+                nodeChangeConditions.Remove(dialogChangeCondition);
 
-        outputNode.Dialog.possibleNextDialogs[inputNode.Dialog] = dialogChangeConditions;
+        outputNode.Dialog.possibleNextDialogs[inputNode.Dialog] = nodeChangeConditions;
     }
 }
 

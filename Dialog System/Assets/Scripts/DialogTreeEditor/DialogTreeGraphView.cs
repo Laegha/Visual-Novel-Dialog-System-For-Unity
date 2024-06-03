@@ -1,12 +1,10 @@
 using UnityEngine.UIElements;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor;
-using UnityEngine.InputSystem;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Build.Pipeline;
 
 public class DialogTreeGraphView : GraphView
 {
@@ -33,17 +31,16 @@ public class DialogTreeGraphView : GraphView
     public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
     {
         base.BuildContextualMenu(evt);
-        evt.menu.AppendAction($"[{Type.GetType("DialogNode")}]", (a) => CreateNode(generatedNodes, null));
+        evt.menu.AppendAction($"[{Type.GetType("DialogNode")}]", (a) => CreateNode(null));
     }
 
-    int generatedNodes = 0;
     public void PopulateView(DialogTree dialogTree)
     {
         graphViewChanged -= OnGraphViewChanged;
         DeleteElements(graphElements);
         graphViewChanged += OnGraphViewChanged;
 
-        generatedNodes = 0;
+        nodeViews.Clear();
 
         if (dialogTree == null)
             return;
@@ -54,7 +51,7 @@ public class DialogTreeGraphView : GraphView
         //    int j = 1;
         //    foreach (KeyValuePair<Dialog, List<DialogChangeCondition>> nextDialog in dialogTree.Dialogs[i.ToString()].possibleNextDialogs)
         //    {
-        //        DialogNodeView inputNodeView = CreateNode((i + j).ToString(), nextDialog.Key).View;
+        //        DialogNodeView inputNodeView = CreateNode(nextDialog.Key).View;
         //        CreateEdge(outputNodeView, inputNodeView, nextDialog.Value.ToArray());
         //        j++;
         //    }
@@ -73,8 +70,12 @@ public class DialogTreeGraphView : GraphView
                     editor.RemoveNode(nodeView.node);
 
                     nodeViews.Remove(nodeView);
-                    if (nodeView.node.DialogIndex == 0)
-                        nodeViews[0].Remove(nodeViews[0].inputContainer);
+                    if (nodeView.node.IsInitial && nodeViews.Count > 0)
+                    {
+                        nodeViews[0].inputContainer.Remove(nodeViews[0].input);
+                        nodeViews[0].node.IsInitial = true;
+                        editor.currTree.initialDialog = nodeViews[0].node.Dialog;
+                    }
                 }
 
                 DialogEdge dialogEdge = elem as DialogEdge;
@@ -82,6 +83,7 @@ public class DialogTreeGraphView : GraphView
                 {
                     dialogEdge.RemoveFromHierarchy();
                     dialogEdge.OnRemoved();
+                    Debug.Log("Removed edge");
                 }
 
             });
@@ -99,7 +101,7 @@ public class DialogTreeGraphView : GraphView
         return graphViewChange;
     }
 
-    DialogNode CreateNode(int key, Dialog value)
+    DialogNode CreateNode(Dialog value)
     {
         if (!editor.IsTreeSet())
         {
@@ -109,13 +111,12 @@ public class DialogTreeGraphView : GraphView
 
         DialogNode node = ScriptableObject.CreateInstance("DialogNode") as DialogNode;
         node.Dialog = value;
-        node.DialogIndex = key;
+        node.IsInitial = nodeViews.Count == 0 ? true : false ;
 
         editor.AddNode(node);
 
         CreateNodeView(node);
 
-        generatedNodes++;
         return node;
     }
 
@@ -124,7 +125,7 @@ public class DialogTreeGraphView : GraphView
         DialogNodeView newNodeView = new DialogNodeView();
         newNodeView.node = node != null ? node : ScriptableObject.CreateInstance("DialogNode") as DialogNode;
         newNodeView.treeEditor = editor;
-        newNodeView.title = "New DialogNode";
+        newNodeView.title = "New Dialog";
         newNodeView.Start();
 
         AddElement(newNodeView);
@@ -135,7 +136,7 @@ public class DialogTreeGraphView : GraphView
     {
         DialogEdge dialogEdge = outputNode.output.ConnectTo(inputNode.input) as DialogEdge;
         dialogEdge.Start(editor.inspectorView);
-        dialogEdge.dialogConnection.dialogChangeConditions = dialogChangeConditions;
+        dialogEdge.dialogConnection._connectionChangeConditions = dialogChangeConditions;
     }
 
     public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)

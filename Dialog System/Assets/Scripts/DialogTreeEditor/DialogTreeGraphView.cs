@@ -45,6 +45,12 @@ public class DialogTreeGraphView : GraphView
         if (dialogTree == null)
             return;
 
+        bool generatingNodes = true;
+        Dialog nextNodeDialog = dialogTree.initialDialog;
+        while(generatingNodes)
+        {
+
+        }
         //for (int i = 0; i < dialogTree.Dialogs.Count; i++)
         //{
         //    DialogNodeView outputNodeView = CreateNode(i.ToString(), dialogTree.Dialogs[i.ToString()]).View;

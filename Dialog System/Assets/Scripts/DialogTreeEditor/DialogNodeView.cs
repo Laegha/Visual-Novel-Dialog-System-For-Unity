@@ -1,8 +1,6 @@
 using System;
-using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -30,16 +28,19 @@ public class DialogNodeView : Node
         
         CreateOutput();
 
-        if (node.Dialog == null)
+        style.left = node.DialogData.NodePosition.x;
+        style.top = node.DialogData.NodePosition.y;
+
+        if (node.DialogData.Dialog == null)
             return;
 
-        title = node.Dialog.name;
+        title = node.DialogData.Dialog.name;
 
     }
 
     void CreateInput()
     {
-        input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(DialogChangeCondition));
+        input = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(DialogChangeCondition));
         input.portName = "";
         inputContainer.Add(input);
     }
@@ -61,5 +62,6 @@ public class DialogNodeView : Node
     {
         base.SetPosition(newPos);
         Vector2 newPosVector = new Vector2(newPos.xMin, newPos.yMin);
+        node.DialogData.NodePosition = newPosVector;
     }
 }

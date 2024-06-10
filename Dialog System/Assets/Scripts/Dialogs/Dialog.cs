@@ -28,10 +28,6 @@ public class Dialog : ScriptableObject
     Shrinker shrinkingCharacter = null;
     float speakerShrinkTime = .25f;
 
-
-    //these will be affected when editing the tree and used to change between dialogs during runtime
-    [HideInInspector] public Dictionary<Dialog, List<DialogChangeCondition>> possibleNextDialogs = new Dictionary<Dialog, List<DialogChangeCondition>>();
-
     public void Start() => movementHandler = new CharacterMovementHandler(thisDialogDriver);
 
     public void Update()

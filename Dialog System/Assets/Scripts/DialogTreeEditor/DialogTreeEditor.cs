@@ -34,25 +34,25 @@ public class DialogTreeEditor : EditorWindow
         root.Add(labelFromUXML);
 
         treeView = root.Q<DialogTreeGraphView>();
-        //treeView.OnNodeSelected = OnNodeSelected;
         treeView.editor = this;
         inspectorView = root.Q<InspectorView>();
         treeChangeView = root.Q<TreeChangeView>();
+
     }
 
     private void OnGUI()
     {
         if (currTree != treeChangeView.TreeChange.currentlyEditingTree)
         {
+            DialogTree prevTree = currTree;
             currTree = treeChangeView.TreeChange.currentlyEditingTree;
-            //dialogs = currTree.Dialogs;
             dialogNodes.Clear();
-            treeView.PopulateView(currTree);
+            treeView.PopulateView(prevTree, currTree);
         }
 
         foreach(DialogNode dialogNode in dialogNodes)
         {
-            if(dialogNode.Dialog != dialogNode.PrevDialog)
+            if(dialogNode.DialogData.Dialog != dialogNode.PrevDialog)
             {
                 ChangeNodeDialog(dialogNode);
 
@@ -77,28 +77,24 @@ public class DialogTreeEditor : EditorWindow
         return currTree != null;
     }
 
-    public void AddNode(DialogNode newNode)
-    {
-        dialogNodes.Add(newNode);
-        if (newNode.IsInitial)
-            currTree.initialDialog = newNode.Dialog;
-    }
-
-    public void RemoveNode(DialogNode removedNode)
-    {
-        dialogNodes.Remove(removedNode);
-    }
 
     void ChangeNodeDialog(DialogNode newNode)
     {
-        newNode.PrevDialog = newNode.Dialog;
+        newNode.PrevDialog = newNode.DialogData.Dialog;
 
-        newNode.View.title = newNode.Dialog != null ? newNode.Dialog.name : "New Dialog";
+        newNode.View.title = newNode.DialogData.Dialog != null ? newNode.DialogData.Dialog.name : "New Dialog";
 
-        newNode.InputConnections.ForEach(connection => connection.UpdateDialogs()); 
+        if(newNode.InputConnection != null)
+            newNode.InputConnection.UpdateDialogs(); 
+
         newNode.OutputConnections.ForEach(connection => connection.UpdateDialogs());
 
         if (newNode.IsInitial)
-            currTree.initialDialog = newNode.Dialog;
+            UpdateInitialDialog(newNode.DialogData);
     }
+    public void AddNode(DialogNode newNode) => dialogNodes.Add(newNode);
+
+    public void RemoveNode(DialogNode removedNode) => dialogNodes.Remove(removedNode);
+
+    public void UpdateInitialDialog(DialogData newInitialDialog) => currTree.InitialDialog = newInitialDialog;
 }

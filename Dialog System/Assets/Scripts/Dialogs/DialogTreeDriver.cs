@@ -21,7 +21,7 @@ public class DialogTreeDriver : MonoBehaviour
 
     private void Awake()
     {
-        currDialogDriver = new DialogDriver(this, dialogTree.initialDialog);
+        currDialogDriver = new DialogDriver(this, dialogTree.InitialDialog.Dialog);
     }
 
     private void Start()

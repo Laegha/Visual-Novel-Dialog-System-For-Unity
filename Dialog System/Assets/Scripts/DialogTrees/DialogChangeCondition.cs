@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogChangeCondition : MonoBehaviour
+[CreateAssetMenu(fileName = "NewDialogChangeCondition", menuName = "ScriptableObjects/Dialogs/DialogChangeCondition", order = 1)]
+public class DialogChangeCondition : ScriptableObject
 {
     public virtual bool IsFullfilled()
     {

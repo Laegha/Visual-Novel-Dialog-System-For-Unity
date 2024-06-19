@@ -39,7 +39,7 @@ public class DialogConnection : ScriptableObject
 
         //Debug.Log(outputNode.DialogData.PossibleNextDialogs);
         if(!outputNode.DialogData.PossibleNextDialogs.ContainsKey(inputNode.DialogData))
-            outputNode.DialogData.PossibleNextDialogs.Add(inputNode.DialogData, new List<DialogChangeCondition>());
+            outputNode.DialogData.PossibleNextDialogs.Add(inputNode.DialogData, new DialogChangeCondition[0]);
 
     }
     #endregion
@@ -47,45 +47,24 @@ public class DialogConnection : ScriptableObject
     #region Managing changes in edge
     public void Update()
     {
-        //List<DialogChangeCondition> nodeChangeConditions = new List<DialogChangeCondition>();
-        //outputNode.DialogData.PossibleNextDialogs[inputNode.DialogData].ForEach(condition => nodeChangeConditions.Add(condition));
-
-        ////check for missing values in Dialog.possibleNextDialogs
-        //foreach (DialogChangeCondition edgeChangeCondition in connectionChangeConditions)
-            //if (!nodeChangeConditions.Contains(edgeChangeCondition))
-                //nodeChangeConditions.Add(edgeChangeCondition);
-
-
-        ////check for extra values in Dialog.possibleNextDialogs
-        //foreach (DialogChangeCondition dialogChangeCondition in outputNode.DialogData.PossibleNextDialogs[inputNode.DialogData])
-            //if (!connectionChangeConditions.Contains(dialogChangeCondition))
-                //nodeChangeConditions.Remove(dialogChangeCondition);
-
-        //check for extra values in Dialog.possibleNextDialogs
-        outputNode.DialogData.PossibleNextDialogs[inputNode.DialogData].ForEach(condition =>{
-            if (!connectionChangeConditions.Contains(condition))
-            {
+        if (outputNode.DialogData.PossibleNextDialogs[inputNode.DialogData].Length != connectionChangeConditions.Length)
+        {
+            UpdateNodeConditions();
+            return;
+        }
+        for(int i = 0; i <  connectionChangeConditions.Length; i++)
+        {
+            if (connectionChangeConditions[i] != outputNode.DialogData.PossibleNextDialogs[inputNode.DialogData][i])
                 UpdateNodeConditions();
-                return;
-
-            }
-        });
-        //check for missing values in Dialog.possibleNextDialogs
-        foreach (var item in connectionChangeConditions)
-            if (!outputNode.DialogData.PossibleNextDialogs[inputNode.DialogData].Contains(item))
-            {
-                UpdateNodeConditions();
-                return;
-            }
-
-
+        }
     }
     #endregion
 
     void UpdateNodeConditions()
     {
-        outputNode.DialogData.PossibleNextDialogs[inputNode.DialogData] = connectionChangeConditions.ToList();
-        Debug.Log("Updated node");
+        outputNode.DialogData.PossibleNextDialogs[inputNode.DialogData] = connectionChangeConditions;
+        Debug.Log("New PossibleNextDialogs: " + outputNode.DialogData.PossibleNextDialogs[inputNode.DialogData].Length);
+        Debug.Log("New ChangeConditions: " + connectionChangeConditions.Length);
 
     }
 

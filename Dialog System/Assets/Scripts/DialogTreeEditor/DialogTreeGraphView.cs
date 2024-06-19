@@ -41,13 +41,13 @@ public class DialogTreeGraphView : GraphView
     {
         if(prevTree != null)
         {
-            foreach (var node in nodeViews)
+            foreach (var nodeView in nodeViews)
             {
-                if (node.node.IsInitial)
+                if (nodeView.node.IsInitial)
                     continue;
 
-                if (!node.input.connected)
-                    prevTree.UnusedNodes.Add(node.node.DialogData);
+                if (!nodeView.input.connected)
+                    prevTree.UnusedNodes.Add(nodeView.node.DialogData);
             }
 
         }
@@ -74,7 +74,7 @@ public class DialogTreeGraphView : GraphView
             foreach (DialogData nextDialog in prevDialog.PossibleNextDialogs.Keys)//this cycle generates every node connected to prevDialog and connects them
             {
                 DialogNodeView nextNodeView = CreateNode(nextDialog).View;
-                CreateEdge(prevNodeView, nextNodeView, prevDialog.PossibleNextDialogs[nextDialog].ToArray());
+                CreateEdge(prevNodeView, nextNodeView, prevDialog.PossibleNextDialogs[nextDialog]);
 
                 if (nextDialog.PossibleNextDialogs.Count == 0)//if the generated node doesn't have any output nodes, then we won't be interested on it anymore
                     continue;

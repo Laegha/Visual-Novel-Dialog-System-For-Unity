@@ -8,13 +8,15 @@ public class DialogEdge : Edge
 
     public DialogConnection dialogConnection = ScriptableObject.CreateInstance("DialogConnection") as DialogConnection;
 
-    public void Start(InspectorView inspectorView)
+    public void Start(InspectorView inspectorView, DialogTreeGraphView graphView)
     {
         this.inspectorView = inspectorView;
         DialogNodeView outputNode = output.node as DialogNodeView;
         DialogNodeView inputNode = input.node as DialogNodeView;
 
         dialogConnection.connectionName = outputNode.title + "->" + inputNode.title;
+
+        dialogConnection.graphView = graphView;
 
         dialogConnection.outputNode = outputNode.node;
         dialogConnection.inputNode = inputNode.node;

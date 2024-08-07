@@ -9,6 +9,7 @@ public class DialogConnection : ScriptableObject
     [HideInInspector] public bool isConnectionPossible;
 
     public DialogChangeCondition[] connectionChangeConditions = new DialogChangeCondition[0];
+    public DialogChangeCondition[] ConnectionChangeConditions { get { return connectionChangeConditions; } set { connectionChangeConditions = value; Debug.Log("connectionChangeConditions: " + connectionChangeConditions.Length); } }
 
     [HideInInspector] public DialogNode outputNode;
     [HideInInspector] public DialogNode inputNode;
@@ -16,15 +17,16 @@ public class DialogConnection : ScriptableObject
     [HideInInspector] public DialogData prevOutputDialog;
     [HideInInspector] public DialogData prevInputDialog;
 
+    public DialogTreeGraphView graphView;
     #region Managing changes between dialogs
     public void UpdateDialogs()
     {
-        if(isConnectionPossible)
+        if(isConnectionPossible && !graphView.isPopulating)
         {
             //remove previous dialog transitions
             UnlinkConnection();
 
-            connectionChangeConditions = new DialogChangeCondition[0];
+            ConnectionChangeConditions = new DialogChangeCondition[0];
         }
 
         if (inputNode.DialogData.Dialog == null || outputNode.DialogData.Dialog == null)
@@ -47,14 +49,14 @@ public class DialogConnection : ScriptableObject
     #region Managing changes in edge
     public void Update()
     {
-        if (outputNode.DialogData.PossibleNextDialogs[inputNode.DialogData].Length != connectionChangeConditions.Length)
+        if (outputNode.DialogData.PossibleNextDialogs[inputNode.DialogData].Length != ConnectionChangeConditions.Length)
         {
             UpdateNodeConditions();
             return;
         }
-        for(int i = 0; i <  connectionChangeConditions.Length; i++)
+        for(int i = 0; i <  ConnectionChangeConditions.Length; i++)
         {
-            if (connectionChangeConditions[i] != outputNode.DialogData.PossibleNextDialogs[inputNode.DialogData][i])
+            if (ConnectionChangeConditions[i] != outputNode.DialogData.PossibleNextDialogs[inputNode.DialogData][i])
                 UpdateNodeConditions();
         }
     }
@@ -62,9 +64,9 @@ public class DialogConnection : ScriptableObject
 
     void UpdateNodeConditions()
     {
-        outputNode.DialogData.PossibleNextDialogs[inputNode.DialogData] = connectionChangeConditions;
+        outputNode.DialogData.PossibleNextDialogs[inputNode.DialogData] = ConnectionChangeConditions;
         Debug.Log("New PossibleNextDialogs: " + outputNode.DialogData.PossibleNextDialogs[inputNode.DialogData].Length);
-        Debug.Log("New ChangeConditions: " + connectionChangeConditions.Length);
+        Debug.Log("New ChangeConditions: " + ConnectionChangeConditions.Length);
 
     }
 

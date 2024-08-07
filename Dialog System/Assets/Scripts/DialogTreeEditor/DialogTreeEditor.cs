@@ -85,7 +85,7 @@ public class DialogTreeEditor : EditorWindow
         newNode.View.title = newNode.DialogData.Dialog != null ? newNode.DialogData.Dialog.name : "New Dialog";
 
         if(newNode.InputConnection != null)
-            newNode.InputConnection.UpdateDialogs(); 
+            newNode.InputConnection.UpdateDialogs();
 
         newNode.OutputConnections.ForEach(connection => connection.UpdateDialogs());
 

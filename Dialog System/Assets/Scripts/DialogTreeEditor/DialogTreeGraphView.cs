@@ -13,6 +13,8 @@ public class DialogTreeGraphView : GraphView
 
     public DialogTreeEditor editor;
 
+    public bool isPopulating;
+
     List<DialogNodeView> nodeViews = new List<DialogNodeView>();
 
     public DialogTreeGraphView()
@@ -39,6 +41,7 @@ public class DialogTreeGraphView : GraphView
 
     public void PopulateView(DialogTree prevTree, DialogTree newTree)
     {
+        isPopulating = true;
         if(prevTree != null)
         {
             foreach (var nodeView in nodeViews)
@@ -103,6 +106,7 @@ public class DialogTreeGraphView : GraphView
             pendingDialogs.Remove(pendingDialogs[0]);
 
         }
+        isPopulating = false;
     }
 
     GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
@@ -189,7 +193,9 @@ public class DialogTreeGraphView : GraphView
         AddElement(dialogEdge);
 
         dialogEdge.Start(editor.inspectorView);
-        dialogEdge.dialogConnection.connectionChangeConditions = dialogChangeConditions;
+        dialogEdge.dialogConnection.ConnectionChangeConditions = dialogChangeConditions;
+        dialogEdge.dialogConnection.graphView = this;
+        Debug.Log(dialogEdge.dialogConnection.ConnectionChangeConditions.Length);
     }
 
     public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)

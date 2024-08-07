@@ -4,8 +4,8 @@ using UnityEditor;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
-using Unity.VisualScripting;
 
 public class DialogTreeGraphView : GraphView
 {
@@ -106,7 +106,8 @@ public class DialogTreeGraphView : GraphView
             pendingDialogs.Remove(pendingDialogs[0]);
 
         }
-        isPopulating = false;
+        Debug.Log("isPopulating from GraphView: " + isPopulating);
+        isPopulating = false;   
     }
 
     GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
@@ -149,7 +150,7 @@ public class DialogTreeGraphView : GraphView
                 DialogEdge dialogEdge = edge as DialogEdge;
                 if (dialogEdge != null)
                 {
-                    dialogEdge.Start(editor.inspectorView);
+                    dialogEdge.Start(editor.inspectorView, this);
                 }
             });
 
@@ -192,9 +193,8 @@ public class DialogTreeGraphView : GraphView
         DialogEdge dialogEdge = outputNode.output.ConnectTo<DialogEdge>(inputNode.input);
         AddElement(dialogEdge);
 
-        dialogEdge.Start(editor.inspectorView);
+        dialogEdge.Start(editor.inspectorView, this);
         dialogEdge.dialogConnection.ConnectionChangeConditions = dialogChangeConditions;
-        dialogEdge.dialogConnection.graphView = this;
         Debug.Log(dialogEdge.dialogConnection.ConnectionChangeConditions.Length);
     }
 

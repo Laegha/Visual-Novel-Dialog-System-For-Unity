@@ -43,6 +43,9 @@ public class DialogConnection : ScriptableObject
         if(!outputNode.DialogData.PossibleNextDialogs.ContainsKey(inputNode.DialogData))
             outputNode.DialogData.PossibleNextDialogs.Add(inputNode.DialogData, new DialogChangeCondition[0]);
 
+        if (graphView.isPopulating)
+            graphView.ConnectionInitialized();
+
     }
     #endregion
 

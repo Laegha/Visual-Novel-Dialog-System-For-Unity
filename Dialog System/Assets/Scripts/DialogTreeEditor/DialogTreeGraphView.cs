@@ -39,6 +39,7 @@ public class DialogTreeGraphView : GraphView
         });//create a new node, and if its the only in the tree, then update the initialDialog of the tree to its
     }
 
+    List<bool> initializedConnections = new List<bool>();
     public void PopulateView(DialogTree prevTree, DialogTree newTree)
     {
         isPopulating = true;
@@ -78,6 +79,7 @@ public class DialogTreeGraphView : GraphView
             {
                 DialogNodeView nextNodeView = CreateNode(nextDialog).View;
                 CreateEdge(prevNodeView, nextNodeView, prevDialog.PossibleNextDialogs[nextDialog]);
+                initializedConnections.Add(false);
 
                 if (nextDialog.PossibleNextDialogs.Count == 0)//if the generated node doesn't have any output nodes, then we won't be interested on it anymore
                     continue;
@@ -106,8 +108,26 @@ public class DialogTreeGraphView : GraphView
             pendingDialogs.Remove(pendingDialogs[0]);
 
         }
+        while (!AllConnectionsInitialized()) { }
         Debug.Log("isPopulating from GraphView: " + isPopulating);
         isPopulating = false;   
+    }
+    public void ConnectionInitialized()
+    {
+        for(int i = 0; i < initializedConnections.Count(); i++)
+        {
+            if (!initializedConnections[i])
+            {
+                initializedConnections[i] = true;
+                return;
+            }
+        }
+    }
+    bool AllConnectionsInitialized()
+    {
+        foreach (bool connection in initializedConnections)
+            if (!connection) return false;
+        return true;
     }
 
     GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
